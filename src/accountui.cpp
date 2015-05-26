@@ -1,62 +1,31 @@
 ﻿#include <QFile>
-#include <QDebug>
 #include "accountui.h"
-#include "ui_accountui.h"
 
-AccountUi::AccountUi(IpUi *ipUi, QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::AccountUi)
+AccountUi::AccountUi(ConnectionUi *connectionUi)
 {
-    ip = ipUi;
-    ui->setupUi(this);
-    aboutUi = new AboutUi;
+    connection = connectionUi;
     timer = new QTimer;
-    QFile *file = new QFile(":qss/qss/accountui.qss");
-    file->open(QFile::ReadOnly);
-    setStyleSheet(file->readAll());
-    file->deleteLater();
-    connect(ui->aboutButton, SIGNAL(clicked()),
-            aboutUi, SLOT(exec()));
-    connect(ui->logoutButton, SIGNAL(clicked()),
-            this, SLOT(logoutClicked()));
     connect(timer, SIGNAL(timeout()), this, SLOT(timeIncrement()));
-
-    ui->verticalLayout_2->addWidget(ip);
-
-    this->resize(320, 340);
-    ui->extendWidget->setVisible(false);
-    ui->extendButton->setCheckable(true);
-
-    connect(ui->extendButton, SIGNAL(toggled(bool)),
-            this, SLOT(adjustWindow(bool)));
 }
 
 AccountUi::~AccountUi()
 {
-    delete ui;
-}
-
-void AccountUi::logoutClicked()
-{
-    emit logoutSignal();
 }
 
 void AccountUi::infoSlot(Info info)
 {
-    QString flowText, moneyText;
     if (info.infoType == Info::LoginInfo) {
         hasAccurateTraffic = false;
         roughTraffic = qMax(info.accountInfo.roughTraffic, roughTraffic);
     }
     else {
-        qDebug() << info.accountInfo.totalAccurateTraffic;
         hasAccurateTraffic = true;
         thisSessionTraffic = info.accountInfo.totalAccurateTraffic;
-        ui->username->setText(info.accountInfo.userName);
-        ui->moneyNumber->setText(QString::number(info.accountInfo.balance, 'f', 2) + "RMB");
+        ui->rootContext()->setContextProperty("accountUsername",info.accountInfo.userName);
+        ui->rootContext()->setContextProperty("accountMoney",QString::number(info.accountInfo.balance, 'f', 2) + "RMB");
     }
     if (info.infoType == Info::QueryInfo)
-        ip->showIp(info);
+        connection->show(info);
     updateTraffic();
 }
 
@@ -66,7 +35,7 @@ void AccountUi::checkResultSlot(Info info)
     int timeReceived = info.accountInfo.loginTime;
     if (onlineTime != timeReceived) {
         onlineTime = timeReceived;
-        timer->start(1000); 
+        timer->start(1000);
     }
     updateTraffic();
 }
@@ -74,10 +43,10 @@ void AccountUi::checkResultSlot(Info info)
 void AccountUi::updateTraffic()
 {
     if (hasAccurateTraffic) {
-        ui->flowNumber->setText(DataFormatter::trafficForm(roughTraffic + thisSessionTraffic));
+        ui->rootContext()->setContextProperty("accountFlow",DataFormatter::trafficForm(roughTraffic + thisSessionTraffic));
     }
     else {
-        ui->flowNumber->setText(">=" + DataFormatter::trafficForm(roughTraffic));
+        ui->rootContext()->setContextProperty("accountFlow",">=" + DataFormatter::trafficForm(roughTraffic));
     }
 }
 
@@ -88,43 +57,15 @@ void AccountUi::timeIncrement()
         QString timeText = DataFormatter::timeForm(onlineTime / 60 / 60) + ":" +
                            DataFormatter::timeForm(onlineTime / 60 % 60) + ":" +
                            DataFormatter::timeForm(onlineTime % 60);
-        ui->timeNumber->setText(timeText);
+        ui->rootContext()->setContextProperty("accountTime",timeText);
     }
     else {
-        ui->timeNumber->setText("Loading...");
+        ui->rootContext()->setContextProperty("accountTime","Loading...");
     }
 }
 
-void AccountUi::logoutFailSlot(Info info)
+void AccountUi::onLogoutSucceed()
 {
-    logoutFail = new FailUi(info.accountInfo.error);
-    logoutFail->exec();
-    logoutFail->deleteLater();
-}
-
-void AccountUi::adjustWindow(bool state)
-{
-    ui->extendWidget->setVisible(state);
-    if (state)
-    {
-        animation.setTargetObject(this);
-        animation.setPropertyName("geometry");
-        animation.setEasingCurve(QEasingCurve::OutQuart);
-        animation.setDuration(500);
-        animation.setEndValue(QRect(this->geometry().x(), this->geometry().y(), 320, 425));
-        animation.start();
-    }
-    else {
-        animation.setTargetObject(this);
-        animation.setPropertyName("geometry");
-        animation.setEasingCurve(QEasingCurve::InQuart);
-        animation.setDuration(500);
-        animation.setEndValue(QRect(this->geometry().x(), this->geometry().y(), 320, 340));
-        animation.start();
-    }}
-
-void AccountUi::closeEvent(QCloseEvent *event)
-{
-    hide();
-    event->ignore();
+    timer->stop();
+    ui->clear();
 }

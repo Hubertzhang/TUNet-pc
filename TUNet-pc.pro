@@ -6,6 +6,8 @@
 QT       += webkit
 QT       += webkitwidgets
 QT       += core gui
+QT       += qml quick
+QT       += quick
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,32 +20,21 @@ SOURCES += \
     src/controller.cpp \
     src/accountui.cpp \
     src/network.cpp \
-    src/aboutui.cpp \
     src/info.cpp \
-    src/loadingui.cpp \
-    src/failui.cpp \
-    src/ipui.cpp \
-    src/dataformatter.cpp
+    src/connectionui.cpp \
+    src/dataformatter.cpp \
+    src/ui.cpp
 
 HEADERS  += \
     src/loginui.h \
     src/controller.h \
     src/accountui.h \
     src/network.h \
-    src/aboutui.h \
     src/info.h \
-    src/loadingui.h \
-    src/failui.h \
-    src/ipui.h \
-    src/dataformatter.h
+    src/connectionui.h \
+    src/dataformatter.h \
+    src/ui.h
 
-FORMS    += \
-    form/loginui.ui \
-    form/accountui.ui \
-    form/aboutui.ui \
-    form/loadingui.ui \
-    form/failui.ui \
-    form/ipui.ui
 
 QT += network
 

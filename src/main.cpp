@@ -1,9 +1,8 @@
-﻿#include "aboutui.h"
-#include "loginui.h"
-#include "loadingui.h"
-#include "accountui.h"
-#include "controller.h"
+﻿#include "controller.h"
+#include "ui.h"
 #include <QApplication>
+
+Ui *ui;
 
 int main(int argc, char *argv[])
 {
@@ -11,9 +10,15 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("lab.mu");
     QCoreApplication::setApplicationName("tunet");
     QApplication a(argc, argv);
-    a.setQuitOnLastWindowClosed(false);
     try {
+        ui = new Ui;
+        ui->clear();
         Controller controller;
+        ui->rootContext()->setContextProperty("loginUi",controller.loginUi);
+        ui->rootContext()->setContextProperty("connectionUi",controller.connectionUi);
+        ui->rootContext()->setContextProperty("accountUi",controller.accountUi);
+        ui->rootContext()->setContextProperty("ui",ui);
+        emit controller.accountUi->message("Welcome back!");
         return a.exec();
     }
     catch(std::exception e){
@@ -22,3 +27,4 @@ int main(int argc, char *argv[])
         msg->exec();
     }
 }
+

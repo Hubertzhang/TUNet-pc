@@ -4,9 +4,11 @@
 #include "loginui.h"
 #include "accountui.h"
 #include "info.h"
-#include "loadingui.h"
 #include "network.h"
 #include <QtWidgets>
+#include <QtQml>
+#include <QFile>
+#include <QDebug>
 
 class Controller : public QObject
 {
@@ -15,14 +17,15 @@ class Controller : public QObject
 public:
     Controller();
     ~Controller();
+    LoginUi *loginUi;
+    AccountUi *accountUi;
+    ConnectionUi *connectionUi;
 
 private:
+    QString username;
+    QString password;
     QTimer *timer;
     Network *network;
-    LoginUi *loginUi;
-    LoadingUi *loadingUi;
-    AccountUi *accountUi;
-    IpUi *ipUi;
     QMenu *trayMenu;
     QSystemTrayIcon *trayIcon;
     enum kind{change, login, loading, account} last;
@@ -36,13 +39,9 @@ private slots:
     void onTimeOut();
     void onLoginStart(QString, QString);
     void onLoginSucceed();
+    void onLoginFail(Info);
     void onLogoutSucceed();
-    void onLoginFail();
-    void showUi(kind);
-    void createTrayMenu();
-    void quit();
-    void showHide();
-    void trayIconClicked(QSystemTrayIcon::ActivationReason);
+    void onLogoutFail(Info);
 };
 
 #endif // CONTROLLER_H

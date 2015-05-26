@@ -112,8 +112,8 @@ void Network::getIpInfo(const QString &replyString)
     QString replyStringPlus = replyString;
     replyStringPlus.remove("<!--", Qt::CaseSensitive);
     replyStringPlus.remove("-->", Qt::CaseSensitive);
-    QWebPage page;
-    QWebFrame *frame = page.mainFrame();
+    QWebPage pageSpc;
+    QWebFrame *frame = pageSpc.mainFrame();
     frame->setHtml(replyStringPlus);
 
     QWebElement doc = frame->documentElement();
@@ -179,7 +179,6 @@ void Network::loginSlot(QString username, QString password)
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     loginReply = manager->post(request, data.toLatin1());
     connect(loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
-
 }
 
 void Network::logoutSlot()
@@ -324,7 +323,7 @@ Network::connectionState Network::checkConnection()
                     || addr.isInSubnet(QHostAddress::parseSubnet("166.111.0.0/16"))
 					|| addr.isInSubnet(QHostAddress::parseSubnet("101.5.0.0/16"))
 					|| addr.isInSubnet(QHostAddress::parseSubnet("101.6.0.0/16"))
-					|| addr.isInSubnet(QHostAddress::parseSubnet("183.173.0.0/16")))) {
+                    || addr.isInSubnet(QHostAddress::parseSubnet("183.173.0.0/16")))) {
                     return Connected;
                 }
             }

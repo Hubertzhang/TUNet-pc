@@ -2,50 +2,32 @@
 #define LOGINUI_H
 
 #include "info.h"
-#include "ipui.h"
-#include "failui.h"
+#include "ui.h"
 
 #include <QWidget>
 #include <QtNetwork>
 #include <QSettings>
-#include <QCloseEvent>
 
-namespace Ui {
-class LoginUi;
-}
+extern Ui *ui;
 
-class LoginUi : public QWidget
+class LoginUi : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit LoginUi(QWidget *parent = 0);
+    explicit LoginUi();
     ~LoginUi();
-    QString username;
-    QString password;
-    bool autoLogin = false;
+    void loadInfo(QString&,QString&);
 
 signals:
     void loginSignal(QString username, QString password);
 
 private:
-    Ui::LoginUi *ui;
     QString url;
     QSettings settings;
-    FailUi *loginFail;
 
 private slots:
-    void selectSavePassword(int state);
-    void disselectAutoLogin(int state);
-    void loadInfo();
-    void saveInfo();
-    void loginClicked();
-
-public slots:
-    void loginFailDialog(Info);
-
-protected:
-    void closeEvent(QCloseEvent *event);
+    void saveInfo(QString,QString);
 };
 
 #endif // LOGINUI_H
