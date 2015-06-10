@@ -17,20 +17,20 @@ LoginUi::~LoginUi()
 void LoginUi::loadInfo(QString &username, QString &password)
 {
     srand(42);
-    
+
     username="";
     QString encryptedUsername = settings.value("Username", QString("")).toString();
     for (int i = 0; i < encryptedUsername.length(); i++) {
         username+=(char)(encryptedUsername.at(i).toLatin1() ^ (rand() & 127));
     }
-    ui->rootContext()->setContextProperty("userUsername",username);
+    Ui::instance()->rootContext()->setContextProperty("userUsername",username);
 
     password="";
     QString encryptedPassword = settings.value("Password", QString("")).toString();
     for (int i = 0; i < encryptedPassword.length(); i++) {
         password+=(char)(encryptedPassword.at(i).toLatin1() ^ (rand() & 127));
     }
-    ui->rootContext()->setContextProperty("userPassword",password);
+    Ui::instance()->rootContext()->setContextProperty("userPassword",password);
 }
 
 void LoginUi::saveInfo(QString username,QString password)

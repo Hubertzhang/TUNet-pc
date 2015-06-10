@@ -10,8 +10,6 @@
 #include <qtimer.h>
 #include <QSettings>
 
-extern Ui *ui;
-
 class ConnectionUi : public QObject
 {
     Q_OBJECT
@@ -34,4 +32,4 @@ private slots:
     void saveName(int,QString,QString);
 };
 
-#endif // IPUI_H
+#endif // CONNECTION_H

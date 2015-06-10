@@ -6,8 +6,10 @@
 
 class Ui : public QQmlApplicationEngine
 {
-public:
     Ui();
+public:
+    static Ui* instance();
+    static Ui *_instance;
     void clear();
 };
 

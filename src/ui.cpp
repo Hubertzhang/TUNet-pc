@@ -1,5 +1,15 @@
 ﻿#include "ui.h"
 
+Ui* Ui::_instance = NULL;
+
+Ui* Ui::instance() {
+    if (_instance == NULL) {
+        _instance = new Ui;
+        _instance->load(QUrl(QStringLiteral("qrc:///qml/qml/Main.qml")));
+    }
+    return _instance;
+}
+
 Ui::Ui() {
     load(QUrl(QStringLiteral("qrc:///qml/qml/Main.qml")));
 }

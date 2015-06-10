@@ -2,22 +2,18 @@
 #include "ui.h"
 #include <QApplication>
 
-Ui *ui;
-
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
     QCoreApplication::setOrganizationName("Lab mU");
     QCoreApplication::setOrganizationDomain("lab.mu");
     QCoreApplication::setApplicationName("tunet");
     QApplication a(argc, argv);
     try {
-        ui = new Ui;
-        ui->clear();
         Controller controller;
-        ui->rootContext()->setContextProperty("loginUi",controller.loginUi);
-        ui->rootContext()->setContextProperty("connectionUi",controller.connectionUi);
-        ui->rootContext()->setContextProperty("accountUi",controller.accountUi);
-        ui->rootContext()->setContextProperty("ui",ui);
+        Ui::instance()->rootContext()->setContextProperty("loginUi",controller.loginUi);
+        Ui::instance()->rootContext()->setContextProperty("connectionUi",controller.connectionUi);
+        Ui::instance()->rootContext()->setContextProperty("accountUi",controller.accountUi);
+        Ui::instance()->clear();
         emit controller.accountUi->message("Welcome back!");
         return a.exec();
     }

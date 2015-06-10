@@ -9,8 +9,6 @@
 #include <QWidget>
 #include <qtimer.h>
 
-extern Ui *ui;
-
 class AccountUi : public QObject
 {
     Q_OBJECT

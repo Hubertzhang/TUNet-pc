@@ -21,8 +21,8 @@ void AccountUi::infoSlot(Info info)
     else {
         hasAccurateTraffic = true;
         thisSessionTraffic = info.accountInfo.totalAccurateTraffic;
-        ui->rootContext()->setContextProperty("accountUsername",info.accountInfo.userName);
-        ui->rootContext()->setContextProperty("accountMoney",QString::number(info.accountInfo.balance, 'f', 2) + "RMB");
+        Ui::instance()->rootContext()->setContextProperty("accountUsername",info.accountInfo.userName);
+        Ui::instance()->rootContext()->setContextProperty("accountMoney",QString::number(info.accountInfo.balance, 'f', 2) + "RMB");
     }
     if (info.infoType == Info::QueryInfo)
         connection->show(info);
@@ -43,10 +43,10 @@ void AccountUi::checkResultSlot(Info info)
 void AccountUi::updateTraffic()
 {
     if (hasAccurateTraffic) {
-        ui->rootContext()->setContextProperty("accountFlow",DataFormatter::trafficForm(roughTraffic + thisSessionTraffic));
+        Ui::instance()->rootContext()->setContextProperty("accountFlow",DataFormatter::trafficForm(roughTraffic + thisSessionTraffic));
     }
     else {
-        ui->rootContext()->setContextProperty("accountFlow",">=" + DataFormatter::trafficForm(roughTraffic));
+        Ui::instance()->rootContext()->setContextProperty("accountFlow",">=" + DataFormatter::trafficForm(roughTraffic));
     }
 }
 
@@ -57,15 +57,15 @@ void AccountUi::timeIncrement()
         QString timeText = DataFormatter::timeForm(onlineTime / 60 / 60) + ":" +
                            DataFormatter::timeForm(onlineTime / 60 % 60) + ":" +
                            DataFormatter::timeForm(onlineTime % 60);
-        ui->rootContext()->setContextProperty("accountTime",timeText);
+        Ui::instance()->rootContext()->setContextProperty("accountTime",timeText);
     }
     else {
-        ui->rootContext()->setContextProperty("accountTime","Loading...");
+        Ui::instance()->rootContext()->setContextProperty("accountTime","Loading...");
     }
 }
 
 void AccountUi::onLogoutSucceed()
 {
     timer->stop();
-    ui->clear();
+    Ui::instance()->clear();
 }

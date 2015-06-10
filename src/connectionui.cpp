@@ -13,10 +13,10 @@ ConnectionUi::~ConnectionUi()
 void ConnectionUi::show(Info info)
 {
     count = info.accountInfo.onlineIpCount;
-    ui->rootContext()->setContextProperty("connectionCount",count);
+    Ui::instance()->rootContext()->setContextProperty("connectionCount",count);
     for (int i = 0; i < count; ++i)
     {
-        ui->rootContext()->setContextProperty(
+        Ui::instance()->rootContext()->setContextProperty(
             QString("connectionIp%1").arg(i),
             QString("%1.%2.%3.%4")
                 .arg(info.accountInfo.ipInfo[i].ipv4_Ip[0])
@@ -24,17 +24,17 @@ void ConnectionUi::show(Info info)
                 .arg(info.accountInfo.ipInfo[i].ipv4_Ip[2])
                 .arg(info.accountInfo.ipInfo[i].ipv4_Ip[3])
         );
-        ui->rootContext()->setContextProperty(
+        Ui::instance()->rootContext()->setContextProperty(
             QString("connectionAddress%1").arg(i),
             info.accountInfo.ipInfo[i].macAdress
         );
-        ui->rootContext()->setContextProperty(
+        Ui::instance()->rootContext()->setContextProperty(
             QString("connectionTime%1").arg(i),
             DataFormatter::timeForm(info.accountInfo.ipInfo[i].onlineTime[0]) + ":" +
             DataFormatter::timeForm(info.accountInfo.ipInfo[i].onlineTime[1]) + ":" +
             DataFormatter::timeForm(info.accountInfo.ipInfo[i].onlineTime[2])
         );
-        ui->rootContext()->setContextProperty(
+        Ui::instance()->rootContext()->setContextProperty(
             QString("connectionTraffic%1").arg(i),
             DataFormatter::trafficForm(info.accountInfo.ipInfo[i].accurateTraffic)
         );
@@ -45,7 +45,7 @@ void ConnectionUi::show(Info info)
 void ConnectionUi::loadName(Info *info)
 {
     for (int i = 0; i < count; ++i)
-        ui->rootContext()->setContextProperty(
+        Ui::instance()->rootContext()->setContextProperty(
             QString("connectionName%1").arg(i),
             settings.value(info->accountInfo.ipInfo[i].macAdress, "Unknown").toString()
         );
@@ -54,7 +54,7 @@ void ConnectionUi::loadName(Info *info)
 void ConnectionUi::saveName(int index,QString macAddress,QString deviceName)
 {
     settings.setValue(macAddress,deviceName);
-    ui->rootContext()->setContextProperty(
+    Ui::instance()->rootContext()->setContextProperty(
         QString("connectionName%1").arg(index),
         deviceName
     );

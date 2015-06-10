@@ -5,10 +5,7 @@
 #include "ui.h"
 
 #include <QWidget>
-#include <QtNetwork>
 #include <QSettings>
-
-extern Ui *ui;
 
 class LoginUi : public QObject
 {
