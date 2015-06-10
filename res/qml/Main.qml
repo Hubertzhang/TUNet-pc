@@ -108,8 +108,6 @@ ApplicationWindow {
                     flickable.showSnackbar(content)
                 }
             }
-
-
         }
 
         Scrollbar {

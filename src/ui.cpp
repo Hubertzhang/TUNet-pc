@@ -11,7 +11,6 @@ Ui* Ui::instance() {
 }
 
 Ui::Ui() {
-    load(QUrl(QStringLiteral("qrc:///qml/qml/Main.qml")));
 }
 
 void Ui::clear() {
