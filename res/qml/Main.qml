@@ -16,8 +16,8 @@ ApplicationWindow {
     }
 
     property var components: [
-            "Account",
-            "Connection"
+            "AccountUi",
+            "ConnectionUi"
     ]
 
     property var componentLabels: [
@@ -27,20 +27,20 @@ ApplicationWindow {
 
     property int selectedComponent: 0
 
-    Account {
-        id: account
+    AccountUi {
+        id: accountUi
     }
 
-    Connection {
-        id: connection
+    ConnectionUi {
+        id: connectionUi
     }
 
-    User {
-        id: user
+    UserUi {
+        id: userUi
     }
 
-    About {
-        id: about
+    AboutUi {
+        id: aboutUi
     }
 
     initialPage: Page {
@@ -50,12 +50,12 @@ ApplicationWindow {
             Action {
                 iconName: "awesome/user"
                 name: "Account"
-                onTriggered: user.show()
+                onTriggered: userUi.show()
             },
             Action {
                 iconName: "awesome/group"
                 name: "About"
-                onTriggered: about.show();
+                onTriggered: aboutUi.show();
             }
         ]
 
@@ -72,9 +72,9 @@ ApplicationWindow {
                         onClicked: {
                             selectedComponent = modelData
                             if (selectedComponent == 0)
-                                example.sourceComponent = account
+                                example.sourceComponent = accountUi
                             if (selectedComponent == 1)
-                                example.sourceComponent = connection
+                                example.sourceComponent = connectionUi
                          }
                     }
                 }
@@ -94,7 +94,7 @@ ApplicationWindow {
             Loader {
                 id: example
                 anchors.fill: parent
-                sourceComponent: account
+                sourceComponent: accountUi
             }
             Snackbar {
                 id: snackbar
@@ -103,7 +103,7 @@ ApplicationWindow {
                 snackbar.open(message);
             }
             Connections {
-                target: accountUi
+                target: ui
                 onMessage: {
                     flickable.showSnackbar(content)
                 }

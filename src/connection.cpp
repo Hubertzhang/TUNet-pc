@@ -1,16 +1,16 @@
-﻿#include "connectionui.h"
+﻿#include "connection.h"
 
-ConnectionUi::ConnectionUi()
+Connection::Connection()
 {
     connect(this,SIGNAL(okClicked(int,QString,QString)),
             this,SLOT(saveName(int,QString,QString)));
 }
 
-ConnectionUi::~ConnectionUi()
+Connection::~Connection()
 {
 }
 
-void ConnectionUi::show(Info info)
+void Connection::show(Info info)
 {
     count = info.accountInfo.onlineIpCount;
     Ui::instance()->rootContext()->setContextProperty("connectionCount",count);
@@ -42,7 +42,7 @@ void ConnectionUi::show(Info info)
     loadName(&info);
 }
 
-void ConnectionUi::loadName(Info *info)
+void Connection::loadName(Info *info)
 {
     for (int i = 0; i < count; ++i)
         Ui::instance()->rootContext()->setContextProperty(
@@ -51,7 +51,7 @@ void ConnectionUi::loadName(Info *info)
         );
 }
 
-void ConnectionUi::saveName(int index,QString macAddress,QString deviceName)
+void Connection::saveName(int index,QString macAddress,QString deviceName)
 {
     settings.setValue(macAddress,deviceName);
     Ui::instance()->rootContext()->setContextProperty(

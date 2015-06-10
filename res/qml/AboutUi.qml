@@ -4,7 +4,7 @@ import Material.ListItems 0.1 as ListItem
 import Material.Extras 0.1
 
 Dialog {
-    id: about
+    id: aboutUi
     title: "About us"
     ListItem.Subtitled {
         height: 40

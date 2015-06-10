@@ -1,5 +1,5 @@
-﻿#ifndef LOGINUI_H
-#define LOGINUI_H
+﻿#ifndef USER_H
+#define USER_H
 
 #include "info.h"
 #include "ui.h"
@@ -7,24 +7,23 @@
 #include <QWidget>
 #include <QSettings>
 
-class LoginUi : public QObject
+class User : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit LoginUi();
-    ~LoginUi();
+    explicit User();
+    ~User();
     void loadInfo(QString&,QString&);
 
 signals:
     void loginSignal(QString username, QString password);
 
 private:
-    QString url;
     QSettings settings;
 
 private slots:
     void saveInfo(QString,QString);
 };
 
-#endif // LOGINUI_H
+#endif // USER_H

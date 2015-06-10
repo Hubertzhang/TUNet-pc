@@ -1,20 +1,20 @@
-﻿#include "loginui.h"
+﻿#include "user.h"
 
 #include <cstdio>
 #include <algorithm>
 
-LoginUi::LoginUi()
+User::User()
 {
     connect(this, SIGNAL(loginSignal(QString,QString)),
             this, SLOT(saveInfo(QString,QString)));
 }
 
-LoginUi::~LoginUi()
+User::~User()
 {
 
 }
 
-void LoginUi::loadInfo(QString &username, QString &password)
+void User::loadInfo(QString &username, QString &password)
 {
     srand(42);
 
@@ -33,7 +33,7 @@ void LoginUi::loadInfo(QString &username, QString &password)
     Ui::instance()->rootContext()->setContextProperty("userPassword",password);
 }
 
-void LoginUi::saveInfo(QString username,QString password)
+void User::saveInfo(QString username,QString password)
 {
     srand(42);
 

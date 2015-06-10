@@ -1,20 +1,14 @@
 <RCC>
     <qresource prefix="/imgs">
         <file>images/logo.png</file>
-        <file>images/password.png</file>
-        <file>images/username.png</file>
-        <file>images/flow.png</file>
-        <file>images/money.png</file>
-        <file>images/time.png</file>
         <file>images/logo2.png</file>
-        <file>images/background.png</file>
     </qresource>
     <qresource prefix="/qml">
-        <file>qml/About.qml</file>
-        <file>qml/Account.qml</file>
-        <file>qml/Connection.qml</file>
-        <file>qml/ConnectionSingle.qml</file>
         <file>qml/Main.qml</file>
-        <file>qml/User.qml</file>
+        <file>qml/UserUi.qml</file>
+        <file>qml/AccountUi.qml</file>
+        <file>qml/ConnectionSingleUi.qml</file>
+        <file>qml/AboutUi.qml</file>
+        <file>qml/ConnectionUi.qml</file>
     </qresource>
 </RCC>

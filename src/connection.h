@@ -1,5 +1,5 @@
-﻿#ifndef CONNECTIONUI_H
-#define CONNECTIONUI_H
+﻿#ifndef CONNECTION_H
+#define CONNECTION_H
 
 #include "ui.h"
 #include "info.h"
@@ -10,13 +10,13 @@
 #include <qtimer.h>
 #include <QSettings>
 
-class ConnectionUi : public QObject
+class Connection : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit ConnectionUi();
-    ~ConnectionUi();
+    explicit Connection();
+    ~Connection();
     void show(Info);
 
 private:

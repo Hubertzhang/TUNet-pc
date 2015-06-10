@@ -14,7 +14,7 @@ ListItem.Subtitled {
         width: 32
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        onClicked: connectionUi.logoutRequest(number);
+        onClicked: connection.logoutRequest(number);
     }
     action: Icon {
         anchors.centerIn: parent
@@ -58,7 +58,7 @@ ListItem.Subtitled {
             text: "流量统计"
             subText: number == 0 ? connectionTraffic0 : number == 1 ? connectionTraffic1 : connectionTraffic2
         }
-        onAccepted: connectionUi.okClicked(number,macAdress.subText,deviceName.text);
+        onAccepted: connection.okClicked(number,macAdress.subText,deviceName.text);
     }
 
     onClicked: info.show()

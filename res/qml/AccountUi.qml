@@ -6,7 +6,7 @@ import Material.Extras 0.1
 Component {
 Item {
     View {
-        id: accountView
+        id: accountUi
         elevation: 1
         anchors {
             fill: parent
@@ -23,7 +23,7 @@ Item {
                     name: "hardware/desktop_mac"
                     size: Units.dp(28)
                 }
-                onClicked: accountUi.logoutSignal();
+                onClicked: account.logoutSignal();
             }
 
             ListItem.Subtitled {

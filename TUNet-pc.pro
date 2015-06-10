@@ -15,23 +15,23 @@ TARGET = TUNet-pc
 TEMPLATE = app
 
 SOURCES += \
-    src/loginui.cpp \
+    src/user.cpp \
     src/main.cpp \
     src/controller.cpp \
-    src/accountui.cpp \
+    src/account.cpp \
     src/network.cpp \
     src/info.cpp \
-    src/connectionui.cpp \
+    src/connection.cpp \
     src/dataformatter.cpp \
     src/ui.cpp
 
 HEADERS  += \
-    src/loginui.h \
+    src/user.h \
     src/controller.h \
-    src/accountui.h \
+    src/account.h \
     src/network.h \
     src/info.h \
-    src/connectionui.h \
+    src/connection.h \
     src/dataformatter.h \
     src/ui.h
 

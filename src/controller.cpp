@@ -3,13 +3,13 @@
 Controller::Controller()
 {
     network = new Network;
-    loginUi = new LoginUi;
-    connectionUi = new ConnectionUi;
-    accountUi = new AccountUi(connectionUi);
+    user = new User;
+    connection = new Connection;
+    account = new Account(connection);
 
     timer = new QTimer;
     timer->stop();
-    loginUi->loadInfo(username,password);
+    user->loadInfo(username,password);
 
     /*
     createTrayMenu();
@@ -21,12 +21,12 @@ Controller::Controller()
     */
 
     //登陆
-    connect(loginUi, SIGNAL(loginSignal(QString,QString)),
+    connect(user, SIGNAL(loginSignal(QString,QString)),
             this, SLOT(onLoginStart(QString,QString)));
 
     //登陆成功
     connect(network, SIGNAL(loginSucceed(Info)),
-            accountUi, SLOT(infoSlot(Info)));
+            account, SLOT(infoSlot(Info)));
     connect(network, SIGNAL(loginSucceed(Info)),
             this, SLOT(onLoginSucceed()));
     connect(network, SIGNAL(loginSucceed(Info)),
@@ -42,27 +42,27 @@ Controller::Controller()
     connect(this, SIGNAL(checkSignal()),
             network, SLOT(checkSlot()));
     connect(network, SIGNAL(checkResult(Info)),
-            accountUi, SLOT(checkResultSlot(Info)));
+            account, SLOT(checkResultSlot(Info)));
     connect(this, SIGNAL(querySignal(QString, QString)),
             network, SLOT(querySlot(QString, QString)));
     connect(network, SIGNAL(infoSignal(Info)),
-            accountUi, SLOT(infoSlot(Info)));
+            account, SLOT(infoSlot(Info)));
 
     //下线IP
-    connect(connectionUi, SIGNAL(logoutRequest(int)),
+    connect(connection, SIGNAL(logoutRequest(int)),
             network, SLOT(dropIpSlot(int)));
     connect(network, SIGNAL(dropIpSucceed()),
             this, SLOT(onTimeOut()));
 
     //断开
-    connect(accountUi, SIGNAL(logoutSignal()),
+    connect(account, SIGNAL(logoutSignal()),
             network, SLOT(logoutSlot()));
 
     //断开成功
     connect(network, SIGNAL(logoutSucceed()),
             this, SLOT(onLogoutSucceed()));
     connect(network, SIGNAL(logoutSucceed()),
-            accountUi, SLOT(onLogoutSucceed()));
+            account, SLOT(onLogoutSucceed()));
     connect(network, SIGNAL(logoutSucceed()),
             timer, SLOT(stop()));
 
@@ -103,7 +103,7 @@ void Controller::onLoginStart(QString username,QString password)
             errorString = "Not in Tsinghua network";
             break;
         }
-        emit accountUi->message(errorString);
+        emit Ui::instance()->message(errorString);
     }
 }
 
@@ -111,22 +111,22 @@ void Controller::onLoginSucceed()
 {
     emit checkSignal();
     emit querySignal(username, password);
-    emit accountUi->message("Log in successfully");
+    emit Ui::instance()->message("Log in successfully");
 }
 
 void Controller::onLoginFail(Info info)
 {
-    emit accountUi->message(info.accountInfo.error);
+    emit Ui::instance()->message(info.accountInfo.error);
 }
 
 void Controller::onLogoutSucceed()
 {
-    emit accountUi->message("Log out successfully");
+    emit Ui::instance()->message("Log out successfully");
 }
 
 void Controller::onLogoutFail(Info info)
 {
-    emit accountUi->message(info.accountInfo.error);
+    emit Ui::instance()->message(info.accountInfo.error);
 }
 
 Controller::~Controller()

@@ -1,8 +1,8 @@
 ﻿#ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include "loginui.h"
-#include "accountui.h"
+#include "user.h"
+#include "account.h"
 #include "info.h"
 #include "network.h"
 #include <QtWidgets>
@@ -17,9 +17,9 @@ class Controller : public QObject
 public:
     Controller();
     ~Controller();
-    LoginUi *loginUi;
-    AccountUi *accountUi;
-    ConnectionUi *connectionUi;
+    User *user;
+    Account *account;
+    Connection *connection;
 
 private:
     QString username;
@@ -28,7 +28,6 @@ private:
     Network *network;
     QMenu *trayMenu;
     QSystemTrayIcon *trayIcon;
-    enum kind{change, login, loading, account} last;
 
 signals:
     void querySignal(QString, QString);

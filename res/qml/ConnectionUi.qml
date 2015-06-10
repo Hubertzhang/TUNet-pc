@@ -15,15 +15,15 @@ Item {
 
         Column {
             anchors.fill: parent
-            ConnectionSingle {
+            ConnectionSingleUi {
                 property int number: 0
                 visible: connectionCount>=1;
             }
-            ConnectionSingle {
+            ConnectionSingleUi {
                 property int number: 1
                 visible: connectionCount>=2;
             }
-            ConnectionSingle {
+            ConnectionSingleUi {
                 property int number: 2
                 visible: connectionCount>=3;
             }

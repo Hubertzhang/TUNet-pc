@@ -1,20 +1,20 @@
-﻿#ifndef ACCOUNTUI_H
-#define ACCOUNTUI_H
+﻿#ifndef ACCOUNT_H
+#define ACCOUNT_H
 
 #include "ui.h"
-#include "connectionui.h"
+#include "connection.h"
 #include "info.h"
 #include "dataformatter.h"
 
 #include <QWidget>
 #include <qtimer.h>
 
-class AccountUi : public QObject
+class Account : public QObject
 {
     Q_OBJECT
 public:
-    explicit AccountUi(ConnectionUi*);
-    ~AccountUi();
+    explicit Account(Connection*);
+    ~Account();
 
 public:
     int onlineTime = -1;
@@ -23,12 +23,11 @@ public:
 
 private:
     QTimer *timer;
-    ConnectionUi *connection;
+    Connection *connection;
     void updateTraffic();
 
 signals:
     void logoutSignal();
-    void message(QString content);
 
 private slots:
     void timeIncrement();
@@ -39,4 +38,4 @@ public slots:
     void onLogoutSucceed();
 };
 
-#endif // ACCOUNTUI_H
+#endif // ACCOUNT_H

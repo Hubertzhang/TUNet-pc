@@ -10,11 +10,12 @@ int main(int argc, char **argv)
     QApplication a(argc, argv);
     try {
         Controller controller;
-        Ui::instance()->rootContext()->setContextProperty("loginUi",controller.loginUi);
-        Ui::instance()->rootContext()->setContextProperty("connectionUi",controller.connectionUi);
-        Ui::instance()->rootContext()->setContextProperty("accountUi",controller.accountUi);
+        Ui::instance()->rootContext()->setContextProperty("ui",Ui::instance());
+        Ui::instance()->rootContext()->setContextProperty("user",controller.user);
+        Ui::instance()->rootContext()->setContextProperty("connection",controller.connection);
+        Ui::instance()->rootContext()->setContextProperty("account",controller.account);
         Ui::instance()->clear();
-        emit controller.accountUi->message("Welcome back!");
+        emit Ui::instance()->message("Welcome back!");
         return a.exec();
     }
     catch(std::exception e){

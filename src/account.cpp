@@ -1,18 +1,18 @@
 ﻿#include <QFile>
-#include "accountui.h"
+#include "account.h"
 
-AccountUi::AccountUi(ConnectionUi *connectionUi)
+Account::Account(Connection *_connection)
 {
-    connection = connectionUi;
+    connection = _connection;
     timer = new QTimer;
     connect(timer, SIGNAL(timeout()), this, SLOT(timeIncrement()));
 }
 
-AccountUi::~AccountUi()
+Account::~Account()
 {
 }
 
-void AccountUi::infoSlot(Info info)
+void Account::infoSlot(Info info)
 {
     if (info.infoType == Info::LoginInfo) {
         hasAccurateTraffic = false;
@@ -29,7 +29,7 @@ void AccountUi::infoSlot(Info info)
     updateTraffic();
 }
 
-void AccountUi::checkResultSlot(Info info)
+void Account::checkResultSlot(Info info)
 {
     roughTraffic = qMax(info.accountInfo.roughTraffic, roughTraffic);
     int timeReceived = info.accountInfo.loginTime;
@@ -40,7 +40,7 @@ void AccountUi::checkResultSlot(Info info)
     updateTraffic();
 }
 
-void AccountUi::updateTraffic()
+void Account::updateTraffic()
 {
     if (hasAccurateTraffic) {
         Ui::instance()->rootContext()->setContextProperty("accountFlow",DataFormatter::trafficForm(roughTraffic + thisSessionTraffic));
@@ -50,7 +50,7 @@ void AccountUi::updateTraffic()
     }
 }
 
-void AccountUi::timeIncrement()
+void Account::timeIncrement()
 {
     if (onlineTime >= 0) {
         onlineTime++;
@@ -64,7 +64,7 @@ void AccountUi::timeIncrement()
     }
 }
 
-void AccountUi::onLogoutSucceed()
+void Account::onLogoutSucceed()
 {
     timer->stop();
     Ui::instance()->clear();
