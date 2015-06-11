@@ -38,9 +38,6 @@ private slots:
     void onTimeOut();
     void onLoginStart(QString, QString);
     void onLoginSucceed();
-    void onLoginFail(Info);
-    void onLogoutSucceed();
-    void onLogoutFail(Info);
 };
 
 #endif // CONTROLLER_H

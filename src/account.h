@@ -2,8 +2,8 @@
 #define ACCOUNT_H
 
 #include "ui.h"
-#include "connection.h"
 #include "info.h"
+#include "connection.h"
 #include "dataformatter.h"
 
 #include <QWidget>

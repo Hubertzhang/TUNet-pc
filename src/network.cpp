@@ -1,5 +1,16 @@
 ﻿#include "network.h"
 
+Network* Network::_instance = NULL;
+
+Network* Network::instance()
+{
+    if (_instance == NULL) {
+        _instance = new Network;
+        _instance->manager = new QNetworkAccessManager;
+    }
+    return _instance;
+}
+
 Network::Network()
 {
     manager = new QNetworkAccessManager;
@@ -206,17 +217,18 @@ void Network::loginFinished()
         quint64 uid = temp[0].toULongLong();
         if (uid == 0) {
             loginInfo.accountInfo.error = temp[0];
-            emit loginFail(loginInfo);
+            emit Ui::instance()->message(loginInfo.accountInfo.error);
         }
         else {
             loginInfo.accountInfo.roughTraffic = temp[2].toDouble();
             emit loginSucceed(loginInfo);
+            emit Ui::instance()->message("Log in successfully");
         }
     }
 
     else {
         loginInfo.accountInfo.error = reply->errorString();
-        emit loginFail(loginInfo);
+        emit Ui::instance()->message(loginInfo.accountInfo.error);
     }
     reply->deleteLater();
 }
@@ -230,14 +242,15 @@ void Network::logoutFinished()
         QString result = reply->readAll();
         if (result == "logout_ok") {
             emit logoutSucceed();
+            emit Ui::instance()->message("Log out successfully");
             return;
         }
         logoutInfo.accountInfo.error = result;
-        emit logoutFail(logoutInfo);
+        emit Ui::instance()->message(logoutInfo.accountInfo.error);
     }
     else {
         logoutInfo.accountInfo.error = reply->errorString();
-        emit logoutFail(logoutInfo);
+        emit Ui::instance()->message(logoutInfo.accountInfo.error);
     }
     reply->deleteLater();
 }

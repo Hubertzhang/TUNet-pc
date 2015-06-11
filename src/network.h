@@ -1,6 +1,7 @@
 ﻿#ifndef NETWORK_H
 #define NETWORK_H
 
+#include "ui.h"
 #include "info.h"
 #include <QtNetwork>
 #include <QWebPage>
@@ -12,6 +13,8 @@ class Network : public QObject
     Q_OBJECT
 
 public:
+    static Network* instance();
+    static Network *_instance;
     Network();
     ~Network();
     enum connectionState

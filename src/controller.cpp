@@ -2,7 +2,6 @@
 
 Controller::Controller()
 {
-    network = new Network;
     user = new User;
     connection = new Connection;
     account = new Account(connection);
@@ -11,64 +10,46 @@ Controller::Controller()
     timer->stop();
     user->loadInfo(username,password);
 
-    /*
-    createTrayMenu();
-    trayIcon = new QSystemTrayIcon;
-    trayIcon->setContextMenu(trayMenu);
-    trayIcon->setIcon(QIcon(":/imgs/images/logo.png"));
-    trayIcon->show();
-    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayIconClicked(QSystemTrayIcon::ActivationReason)));
-    */
-
     //登陆
     connect(user, SIGNAL(loginSignal(QString,QString)),
             this, SLOT(onLoginStart(QString,QString)));
 
     //登陆成功
-    connect(network, SIGNAL(loginSucceed(Info)),
+    connect(Network::instance(), SIGNAL(loginSucceed(Info)),
             account, SLOT(infoSlot(Info)));
-    connect(network, SIGNAL(loginSucceed(Info)),
+    connect(Network::instance(), SIGNAL(loginSucceed(Info)),
             this, SLOT(onLoginSucceed()));
-    connect(network, SIGNAL(loginSucceed(Info)),
+    connect(Network::instance(), SIGNAL(loginSucceed(Info)),
             this, SLOT(setTimer()));
-    
-    //登录失败
-    connect(network, SIGNAL(loginFail(Info)),
-            this, SLOT(onLoginFail(Info)));
 
     //定时查询
     connect(timer, SIGNAL(timeout()),
             this, SLOT(onTimeOut()));
     connect(this, SIGNAL(checkSignal()),
-            network, SLOT(checkSlot()));
-    connect(network, SIGNAL(checkResult(Info)),
+            Network::instance(), SLOT(checkSlot()));
+    connect(Network::instance(), SIGNAL(checkResult(Info)),
             account, SLOT(checkResultSlot(Info)));
     connect(this, SIGNAL(querySignal(QString, QString)),
-            network, SLOT(querySlot(QString, QString)));
-    connect(network, SIGNAL(infoSignal(Info)),
+            Network::instance(), SLOT(querySlot(QString, QString)));
+    connect(Network::instance(), SIGNAL(infoSignal(Info)),
             account, SLOT(infoSlot(Info)));
 
     //下线IP
     connect(connection, SIGNAL(logoutRequest(int)),
-            network, SLOT(dropIpSlot(int)));
-    connect(network, SIGNAL(dropIpSucceed()),
+            Network::instance(), SLOT(dropIpSlot(int)));
+    connect(Network::instance(), SIGNAL(dropIpSucceed()),
             this, SLOT(onTimeOut()));
 
     //断开
     connect(account, SIGNAL(logoutSignal()),
-            network, SLOT(logoutSlot()));
+            Network::instance(), SLOT(logoutSlot()));
 
     //断开成功
-    connect(network, SIGNAL(logoutSucceed()),
-            this, SLOT(onLogoutSucceed()));
-    connect(network, SIGNAL(logoutSucceed()),
+    connect(Network::instance(), SIGNAL(logoutSucceed()),
             account, SLOT(onLogoutSucceed()));
-    connect(network, SIGNAL(logoutSucceed()),
+    connect(Network::instance(), SIGNAL(logoutSucceed()),
             timer, SLOT(stop()));
 
-    //断开失败
-    connect(network, SIGNAL(logoutFail(Info)),
-            this, SLOT(onLogoutFail(Info)));
 }
 
 void Controller::setTimer()
@@ -86,9 +67,9 @@ void Controller::onLoginStart(QString username,QString password)
 {
     this->username=username;
     this->password=password;
-    Network::connectionState state = network->checkConnection();
+    Network::connectionState state = Network::instance()->checkConnection();
     if (state == Network::Connected) {
-        network->loginSlot(username, password);
+        Network::instance()->loginSlot(username, password);
     }
     else {
         QString errorString;
@@ -111,22 +92,6 @@ void Controller::onLoginSucceed()
 {
     emit checkSignal();
     emit querySignal(username, password);
-    emit Ui::instance()->message("Log in successfully");
-}
-
-void Controller::onLoginFail(Info info)
-{
-    emit Ui::instance()->message(info.accountInfo.error);
-}
-
-void Controller::onLogoutSucceed()
-{
-    emit Ui::instance()->message("Log out successfully");
-}
-
-void Controller::onLogoutFail(Info info)
-{
-    emit Ui::instance()->message(info.accountInfo.error);
 }
 
 Controller::~Controller()
