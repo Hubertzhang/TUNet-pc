@@ -6,7 +6,9 @@
 User::User()
 {
     connect(this, SIGNAL(loginSignal(QString,QString)),
-            this, SLOT(saveInfo(QString,QString)));
+            this, SLOT(loginStart(QString,QString)));
+
+    loadInfo();
 }
 
 User::~User()
@@ -14,7 +16,17 @@ User::~User()
 
 }
 
-void User::loadInfo(QString &username, QString &password)
+void User::loginStart(QString _username, QString _password)
+{
+    username=_username;
+    password=_password;
+    Network::connectionState state = Network::instance()->checkConnection();
+    if (state == Network::Connected) {
+        Network::instance()->loginSlot(username, password);
+    }
+}
+
+void User::loadInfo()
 {
     srand(42);
 
@@ -33,7 +45,7 @@ void User::loadInfo(QString &username, QString &password)
     Ui::instance()->rootContext()->setContextProperty("userPassword",password);
 }
 
-void User::saveInfo(QString username,QString password)
+void User::saveInfo()
 {
     srand(42);
 

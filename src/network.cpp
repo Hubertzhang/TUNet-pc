@@ -20,7 +20,7 @@ Network::~Network()
 {
 }
 
-void Network::querySlot(QString username, QString password)
+void Network::query()
 {
     //Generate MD5 hash of the password
     QCryptographicHash hash(QCryptographicHash::Md5);
@@ -179,8 +179,10 @@ void Network::getIpInfo(const QString &replyString)
     frame->deleteLater();
 }
 
-void Network::loginSlot(QString username, QString password)
+void Network::loginSlot(QString _username, QString _password)
 {
+    username=_username;
+    password=_password;
     QCryptographicHash hash(QCryptographicHash::Md5);
     hash.addData(password.toLatin1());
     QString hashedPassword = hash.result().toHex();
@@ -198,7 +200,7 @@ void Network::logoutSlot()
     connect(logoutReply, SIGNAL(finished()), this, SLOT(logoutFinished()));
 }
 
-void Network::checkSlot()
+void Network::check()
 {
     QNetworkRequest checkRequest(QUrl("http://net.tsinghua.edu.cn/cgi-bin/do_login"));
     checkRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
@@ -340,13 +342,16 @@ Network::connectionState Network::checkConnection()
                     return Connected;
                 }
             }
+            emit Ui::instance()->message("Not in Tsinghua network");
             return NotInTsinghua;
         }
         else {
+            emit Ui::instance()->message("Cannot connect to Internet");
             return NotAccessible;
         }
     }
     else {
+        emit Ui::instance()->message("No Connection");
         return NoConnection;
     }
 }

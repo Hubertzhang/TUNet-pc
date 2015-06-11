@@ -2,8 +2,13 @@
 
 Connection::Connection()
 {
+    //保存设备名称
     connect(this,SIGNAL(okClicked(int,QString,QString)),
             this,SLOT(saveName(int,QString,QString)));
+    //下线IP
+    connect(this, SIGNAL(logoutRequest(int)),
+            Network::instance(), SLOT(dropIpSlot(int)));
+
 }
 
 Connection::~Connection()

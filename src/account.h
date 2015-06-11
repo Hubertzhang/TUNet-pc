@@ -3,20 +3,25 @@
 
 #include "ui.h"
 #include "info.h"
+#include "network.h"
 #include "connection.h"
 #include "dataformatter.h"
 
 #include <QWidget>
 #include <qtimer.h>
 
+class Connection;
+
 class Account : public QObject
 {
     Q_OBJECT
 public:
-    explicit Account(Connection*);
+    explicit Account();
     ~Account();
 
 public:
+    int queryInterval = 30;
+    int lastQueryTime;
     int onlineTime = -1;
     bool hasAccurateTraffic = false;
     double roughTraffic = 0, thisSessionTraffic = 0;

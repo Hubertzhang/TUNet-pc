@@ -1,5 +1,5 @@
-﻿#include "controller.h"
-#include "ui.h"
+﻿#include "ui.h"
+#include <QMessageBox>
 #include <QApplication>
 
 int main(int argc, char **argv)
@@ -9,12 +9,7 @@ int main(int argc, char **argv)
     QCoreApplication::setApplicationName("tunet");
     QApplication a(argc, argv);
     try {
-        Controller controller;
-        Ui::instance()->rootContext()->setContextProperty("ui",Ui::instance());
-        Ui::instance()->rootContext()->setContextProperty("user",controller.user);
-        Ui::instance()->rootContext()->setContextProperty("connection",controller.connection);
-        Ui::instance()->rootContext()->setContextProperty("account",controller.account);
-        Ui::instance()->clear();
+        Ui::instance();
         emit Ui::instance()->message("Welcome back!");
         return a.exec();
     }

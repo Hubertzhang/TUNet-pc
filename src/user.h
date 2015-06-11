@@ -1,8 +1,9 @@
 ﻿#ifndef USER_H
 #define USER_H
 
-#include "info.h"
 #include "ui.h"
+#include "info.h"
+#include "network.h"
 
 #include <QWidget>
 #include <QSettings>
@@ -14,16 +15,19 @@ class User : public QObject
 public:
     explicit User();
     ~User();
-    void loadInfo(QString&,QString&);
 
 signals:
     void loginSignal(QString username, QString password);
 
 private:
+    QString username;
+    QString password;
     QSettings settings;
+    void loadInfo();
+    void saveInfo();
 
 private slots:
-    void saveInfo(QString,QString);
+    void loginStart(QString,QString);
 };
 
 #endif // USER_H

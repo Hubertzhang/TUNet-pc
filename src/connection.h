@@ -3,6 +3,7 @@
 
 #include "ui.h"
 #include "info.h"
+#include "network.h"
 #include "dataformatter.h"
 
 #include <QWidget>

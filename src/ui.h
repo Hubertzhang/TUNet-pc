@@ -1,6 +1,8 @@
 ﻿#ifndef UI_H
 #define UI_H
 
+#include "account.h"
+#include "user.h"
 #include <QObject>
 #include <QQmlContext>
 #include <QQmlApplicationEngine>

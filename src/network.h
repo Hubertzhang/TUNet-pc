@@ -29,6 +29,8 @@ public:
 private:
     QNetworkAccessManager *manager;
     QNetworkReply *queryReply, *loginReply = NULL, *logoutReply, *checkReply, *dropIpReply;
+    QString username;
+    QString password;
 
     enum RequestType
     {
@@ -42,11 +44,12 @@ private:
     void getUserInfo(const QString &replyString);
     void getIpInfo(const QString &replyString);
 
+public:
+    void query();
+    void check();  //Check whether logged in, and get conneted time.
 public slots:
     void loginSlot(QString, QString);
     void logoutSlot();
-    void querySlot(QString, QString);
-    void checkSlot();  //Check whether logged in, and get conneted time.
     void loginAbortSlot(); //Abort login
     void dropIpSlot(int);
 private slots:

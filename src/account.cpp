@@ -1,11 +1,29 @@
 ﻿#include <QFile>
 #include "account.h"
 
-Account::Account(Connection *_connection)
+Account::Account()
 {
-    connection = _connection;
+    connection = new Connection;
     timer = new QTimer;
     connect(timer, SIGNAL(timeout()), this, SLOT(timeIncrement()));
+
+    //登陆成功
+    connect(Network::instance(), SIGNAL(loginSucceed(Info)),
+            this, SLOT(infoSlot(Info)));
+
+    //定时查询
+    connect(Network::instance(), SIGNAL(checkResult(Info)),
+            this, SLOT(checkResultSlot(Info)));
+    connect(Network::instance(), SIGNAL(infoSignal(Info)),
+            this, SLOT(infoSlot(Info)));
+
+    //断开
+    connect(this, SIGNAL(logoutSignal()),
+            Network::instance(), SLOT(logoutSlot()));
+
+    //断开成功
+    connect(Network::instance(), SIGNAL(logoutSucceed()),
+            this, SLOT(onLogoutSucceed()));
 }
 
 Account::~Account()
@@ -26,6 +44,8 @@ void Account::infoSlot(Info info)
     }
     if (info.infoType == Info::QueryInfo)
         connection->show(info);
+    timer->start(1000);
+    lastQueryTime = 0;
     updateTraffic();
 }
 
@@ -52,6 +72,14 @@ void Account::updateTraffic()
 
 void Account::timeIncrement()
 {
+    if (lastQueryTime > 0) {
+        --lastQueryTime;
+    }
+    else {
+        lastQueryTime = queryInterval;
+        Network::instance()->check();
+        Network::instance()->query();
+    }
     if (onlineTime >= 0) {
         onlineTime++;
         QString timeText = DataFormatter::timeForm(onlineTime / 60 / 60) + ":" +

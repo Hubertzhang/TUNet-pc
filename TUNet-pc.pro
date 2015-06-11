@@ -15,9 +15,8 @@ TARGET = TUNet-pc
 TEMPLATE = app
 
 SOURCES += \
-    src/user.cpp \
     src/main.cpp \
-    src/controller.cpp \
+    src/user.cpp \
     src/account.cpp \
     src/network.cpp \
     src/info.cpp \
@@ -27,7 +26,6 @@ SOURCES += \
 
 HEADERS  += \
     src/user.h \
-    src/controller.h \
     src/account.h \
     src/network.h \
     src/info.h \
