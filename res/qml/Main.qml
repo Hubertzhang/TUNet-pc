@@ -1,4 +1,4 @@
-import QtQuick 2.2
+import QtQuick 2.0
 import Material 0.1
 import Material.ListItems 0.1 as ListItem
 
@@ -45,7 +45,7 @@ ApplicationWindow {
 
     initialPage: Page {
         id:page
-        title: "Lab mu"
+        title: "Lab mU"
         actions: [
             Action {
                 iconName: "awesome/user"

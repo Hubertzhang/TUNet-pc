@@ -36,11 +36,12 @@ signals:
 
 private slots:
     void timeIncrement();
+    void onLogoutSucceed();
+    void onDropIpSucceed();
 
 public slots:
     void infoSlot(Info);
     void checkResultSlot(Info);
-    void onLogoutSucceed();
 };
 
 #endif // ACCOUNT_H

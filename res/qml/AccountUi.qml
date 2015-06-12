@@ -20,7 +20,7 @@ Item {
                 subText: accountUsername
                 action: Icon {
                     anchors.centerIn: parent
-                    name: "hardware/desktop_mac"
+                    name: "awesome/desktop"
                     size: Units.dp(28)
                 }
                 onClicked: account.logoutSignal();
@@ -29,9 +29,10 @@ Item {
             ListItem.Subtitled {
                 text: "流量统计"
                 subText: accountFlow
+
                 action: Icon {
                     anchors.centerIn: parent
-                    name: "action/swap_vert"
+                    name: "awesome/cloud_download"
                     size: Units.dp(28)
                 }
             }
@@ -41,7 +42,7 @@ Item {
                 subText: accountTime
                 action: Icon {
                     anchors.centerIn: parent
-                    name: "device/access_alarm"
+                    name: "awesome/clock_o"
                     size: Units.dp(28)
                 }
             }
@@ -59,7 +60,7 @@ Item {
                 }
                 action: Icon {
                     anchors.centerIn: parent
-                    name: "maps/local_atm"
+                    name: "awesome/money"
                     size: Units.dp(28)
                 }
             }

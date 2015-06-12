@@ -21,7 +21,7 @@ void User::loginStart(QString _username, QString _password)
     username=_username;
     password=_password;
     Network::connectionState state = Network::instance()->checkConnection();
-    if (state == Network::Connected) {
+    if (state == Network::Connected || state == Network::NotInTsinghua) {
         Network::instance()->loginSlot(username, password);
     }
 }

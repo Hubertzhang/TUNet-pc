@@ -4,6 +4,8 @@
 Account::Account()
 {
     connection = new Connection;
+    Ui::instance()->rootContext()->setContextProperty("connection",connection);
+
     timer = new QTimer;
     connect(timer, SIGNAL(timeout()), this, SLOT(timeIncrement()));
 
@@ -16,6 +18,10 @@ Account::Account()
             this, SLOT(checkResultSlot(Info)));
     connect(Network::instance(), SIGNAL(infoSignal(Info)),
             this, SLOT(infoSlot(Info)));
+
+    //下线IP
+    connect(Network::instance(), SIGNAL(dropIpSucceed()),
+            this, SLOT(onDropIpSucceed()));
 
     //断开
     connect(this, SIGNAL(logoutSignal()),
@@ -45,7 +51,6 @@ void Account::infoSlot(Info info)
     if (info.infoType == Info::QueryInfo)
         connection->show(info);
     timer->start(1000);
-    lastQueryTime = 0;
     updateTraffic();
 }
 
@@ -95,5 +100,11 @@ void Account::timeIncrement()
 void Account::onLogoutSucceed()
 {
     timer->stop();
+    lastQueryTime = 0;
     Ui::instance()->clear();
+}
+
+void Account::onDropIpSucceed()
+{
+    lastQueryTime = 0;
 }
