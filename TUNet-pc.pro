@@ -5,34 +5,33 @@
 #-------------------------------------------------
 QT       += webkit
 QT       += webkitwidgets
-QT       += core gui
-QT       += qml quick
-QT       += quick
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += widgets
+QT       += qml
 
 TARGET = TUNet-pc
 TEMPLATE = app
 
 SOURCES += \
-    src/main.cpp \
-    src/user.cpp \
-    src/account.cpp \
-    src/network.cpp \
-    src/info.cpp \
-    src/connection.cpp \
-    src/dataformatter.cpp \
-    src/ui.cpp
+    src/backend/BasicNetworkService.cpp \
+    src/backend/UseregPageService.cpp \
+    src/backend/NetPageService.cpp \
+    src/ui/InterfaceFrame.cpp \
+    src/ui/AccountInfoInterface.cpp \
+    src/ui/OnlineStateInterface.cpp \
+    src/NetworkAssistant.cpp \
+    src/Main.cpp \
+    src/DataFormatter.cpp \
 
 HEADERS  += \
-    src/user.h \
-    src/account.h \
-    src/network.h \
-    src/info.h \
-    src/connection.h \
-    src/dataformatter.h \
-    src/ui.h
-
+    src/backend/NetworkInfoType.h \
+    src/backend/BasicNetworkService.h \
+    src/backend/UseregPageService.h \
+    src/backend/NetPageService.h \
+    src/ui/InterfaceFrame.h \
+    src/ui/AccountInfoInterface.h \
+    src/ui/OnlineStateInterface.h \
+    src/NetworkAssistant.h \
+    src/DataFormatter.h \
 
 QT += network
 
