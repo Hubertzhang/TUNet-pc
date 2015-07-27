@@ -5,10 +5,10 @@
     </qresource>
     <qresource prefix="/qml">
         <file>qml/Main.qml</file>
-        <file>qml/UserUi.qml</file>
-        <file>qml/AccountUi.qml</file>
-        <file>qml/ConnectionSingleUi.qml</file>
-        <file>qml/AboutUi.qml</file>
-        <file>qml/ConnectionUi.qml</file>
+        <file>qml/AccountInfo.qml</file>
+        <file>qml/About.qml</file>
+        <file>qml/Connection.qml</file>
+        <file>qml/OnlineState.qml</file>
+        <file>qml/User.qml</file>
     </qresource>
 </RCC>

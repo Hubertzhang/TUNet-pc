@@ -6,7 +6,7 @@ import Material.Extras 0.1
 Component {
 Item {
     View {
-        id: accountUi
+        id: accountInfo
         elevation: 1
         anchors {
             fill: parent
@@ -17,18 +17,17 @@ Item {
 
             ListItem.Subtitled {
                 text: "账号名称"
-                subText: accountUsername
+                subText: accountInfoUsername
                 action: Icon {
                     anchors.centerIn: parent
                     name: "awesome/desktop"
                     size: Units.dp(28)
                 }
-                onClicked: account.logoutSignal();
             }
 
             ListItem.Subtitled {
                 text: "流量统计"
-                subText: accountFlow
+                subText: accountInfoFlow
 
                 action: Icon {
                     anchors.centerIn: parent
@@ -39,7 +38,7 @@ Item {
 
             ListItem.Subtitled {
                 text: "登陆时长"
-                subText: accountTime
+                subText: accountInfoTime
                 action: Icon {
                     anchors.centerIn: parent
                     name: "awesome/clock_o"
@@ -49,7 +48,7 @@ Item {
 
             ListItem.Subtitled {
                 text: "余额"
-                subText: accountMoney
+                subText: accountInfoMoney
                 secondaryItem: Button {
                     text: "充值"
                     elevation: 1

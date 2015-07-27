@@ -15,32 +15,27 @@ ApplicationWindow {
         tabHighlightColor: "white"
     }
 
-    property var components: [
-            "AccountUi",
-            "ConnectionUi"
-    ]
-
     property var componentLabels: [
-            "账户信息",
-            "在线状态"
+            "账户信息", //AccountInfo
+            "在线状态" //OnlineState
     ]
 
     property int selectedComponent: 0
 
-    AccountUi {
-        id: accountUi
+    AccountInfo {
+        id: accountInfo
     }
 
-    ConnectionUi {
-        id: connectionUi
+    OnlineState {
+        id: onlineState
     }
 
-    UserUi {
-        id: userUi
+    User {
+        id: user
     }
 
-    AboutUi {
-        id: aboutUi
+    About {
+        id: about
     }
 
     initialPage: Page {
@@ -50,12 +45,12 @@ ApplicationWindow {
             Action {
                 iconName: "awesome/user"
                 name: "Account"
-                onTriggered: userUi.show()
+                onTriggered: user.show()
             },
             Action {
                 iconName: "awesome/group"
                 name: "About"
-                onTriggered: aboutUi.show();
+                onTriggered: about.show();
             }
         ]
 
@@ -72,9 +67,9 @@ ApplicationWindow {
                         onClicked: {
                             selectedComponent = modelData
                             if (selectedComponent == 0)
-                                example.sourceComponent = accountUi
+                                example.sourceComponent = accountInfo
                             if (selectedComponent == 1)
-                                example.sourceComponent = connectionUi
+                                example.sourceComponent = onlineState
                          }
                     }
                 }
@@ -94,7 +89,7 @@ ApplicationWindow {
             Loader {
                 id: example
                 anchors.fill: parent
-                sourceComponent: accountUi
+                sourceComponent: accountInfo
             }
             Snackbar {
                 id: snackbar
@@ -103,8 +98,8 @@ ApplicationWindow {
                 snackbar.open(message);
             }
             Connections {
-                target: ui
-                onMessage: {
+                target: interfaceFrame
+                onShowHint: {
                     flickable.showSnackbar(content)
                 }
             }

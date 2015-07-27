@@ -4,7 +4,7 @@ import Material.ListItems 0.1 as ListItem
 import Material.Extras 0.1
 
 Dialog {
-    id: userUi
+    id: user
     title: "Account setting"
     height: 230
 
@@ -27,5 +27,7 @@ Dialog {
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
+/*
     onAccepted: user.loginSignal(username.text,password.text)
+*/
 }

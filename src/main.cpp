@@ -1,4 +1,5 @@
-﻿#include <QMessageBox>
+﻿#include "ui/InterfaceFrame.h"
+#include <QMessageBox>
 #include <QApplication>
 
 int main(int argc, char **argv)
@@ -9,9 +10,8 @@ int main(int argc, char **argv)
     QApplication a(argc, argv);
     try {
 /*
-        Ui::instance()->clear();
-        emit Ui::instance()->message("Welcome back!");
 */
+        InterfaceFrame interfaceFrame;
         return a.exec();
     }
     catch(std::exception e){
