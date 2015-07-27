@@ -1,14 +1,4 @@
-#include "dataformatter.h"
-
-DataFormatter::DataFormatter()
-{
-
-}
-
-DataFormatter::~DataFormatter()
-{
-
-}
+#include "DataFormatter.h"
 
 QString DataFormatter::trafficForm(double flow)
 {

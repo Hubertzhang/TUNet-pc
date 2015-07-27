@@ -1,7 +1,14 @@
-﻿#ifndef INFO_H
-#define INFO_H
+#ifndef NETWORKINFOTYPE_H
+#define NETWORKINFOTYPE_H
 
 #include <QString>
+
+enum ConnectionState {
+    Connected = 0,
+    NotInTsinghua,
+    NotAccessible,
+    NoConnection
+};
 
 struct IpInfo
 {
@@ -15,8 +22,7 @@ struct IpInfo
 
 struct AccountInfo
 {
-    QString error = "";  //Empty string when there's no error. Otherwise some description of the error.
-    QString userName;
+    QString username;
     double balance;  //账户余额
     double roughTraffic;  //粗略流量，B为单位
     double totalAccurateTraffic;  //总精确流量，B为单位
@@ -25,23 +31,22 @@ struct AccountInfo
     IpInfo ipInfo[3];  //ip信息
 };
 
-
 class Info
 {
 public:
-    Info();
-    ~Info();
-
     enum InfoType
     {
-        LoginInfo = 0,
+        InvalidInfo = 0,
+        LoginInfo,
         LogoutInfo,
-        QueryInfo,
-        CheckInfo
+        QueryNetInfo,
+        QueryUseregInfo,
+        DropIpInfo
     };
-    
+
+    QString hint = "";
     InfoType infoType;
     AccountInfo accountInfo;//Currently all types of info are stored here.
 };
 
-#endif // INFO_H
+#endif // NETWORKINFORMATIONTYPE_H
