@@ -1,77 +1,91 @@
 #include "AccountInfoInterface.h"
 
-/*
-void Account::infoSlot(Info info)
+AccountInfoInterface::AccountInfoInterface()
 {
-    if (info.infoType == Info::LoginInfo) {
-        hasAccurateTraffic = false;
-        roughTraffic = qMax(info.accountInfo.roughTraffic, roughTraffic);
-    }
-    else {
-        hasAccurateTraffic = true;
-        thisSessionTraffic = info.accountInfo.totalAccurateTraffic;
-        Ui::instance()->rootContext()->setContextProperty("accountUsername",info.accountInfo.userName);
-        Ui::instance()->rootContext()->setContextProperty("accountMoney",QString::number(info.accountInfo.balance, 'f', 2) + "RMB");
-    }
-    if (info.infoType == Info::QueryInfo)
-        connection->show(info);
+    connect(NetPageService::instance(),SIGNAL(loginResult(Info)),
+            this,SLOT(netPageLogin(Info)));
+    connect(NetPageService::instance(),SIGNAL(logoutResult(Info)),
+            this,SLOT(netPageLogout(Info)));
+    connect(NetPageService::instance(),SIGNAL(queryStateResult(Info)),
+            this,SLOT(netPageQueryState(Info)));
+    connect(UseregPageService::instance(),SIGNAL(queryStateResult(Info)),
+            this,SLOT(useregPageQueryState(Info)));
+    connect(UseregPageService::instance(),SIGNAL(dropIpResult(Info)),
+            this,SLOT(useregPageDropIp(Info)));
+    timer = new QTimer();
+    timer->stop();
+    onlineTime=-1;
+    connect(timer,SIGNAL(timeout()),this,SLOT(showOnlineTime()));
+    initializeInterface();
+}
+
+AccountInfoInterface::~AccountInfoInterface()
+{
+    delete timer;
+}
+
+void AccountInfoInterface::initializeInterface()
+{
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountInfoUsername","");
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountInfoFlow","");
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountInfoTime","");
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountInfoMoney","");
+    timer->stop();
+    onlineTime=-1;
+}
+
+void AccountInfoInterface::netPageLogin(Info info)
+{
+    InterfaceEngine::instance()->showHint(info.hint);
+    if (info.infoType==Info::InvalidInfo) return;
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountUsername",info.accountInfo.username);
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountFlow",">=" + DataFormatter::trafficForm(info.accountInfo.roughTraffic));
     timer->start(1000);
-    updateTraffic();
 }
 
-void Account::checkResultSlot(Info info)
+void AccountInfoInterface::netPageLogout(Info info)
 {
-    roughTraffic = qMax(info.accountInfo.roughTraffic, roughTraffic);
-    int timeReceived = info.accountInfo.loginTime;
-    if (onlineTime != timeReceived) {
-        onlineTime = timeReceived;
-        timer->start(1000);
-    }
-    updateTraffic();
+    InterfaceEngine::instance()->showHint(info.hint);
+    if (info.infoType==Info::InvalidInfo) return;
+    initializeInterface();
 }
 
-void Account::updateTraffic()
+void AccountInfoInterface::netPageQueryState(Info info)
 {
-    if (hasAccurateTraffic) {
-        Ui::instance()->rootContext()->setContextProperty("accountFlow",DataFormatter::trafficForm(roughTraffic + thisSessionTraffic));
-    }
-    else {
-        Ui::instance()->rootContext()->setContextProperty("accountFlow",">=" + DataFormatter::trafficForm(roughTraffic));
-    }
+    InterfaceEngine::instance()->showHint(info.hint);
+    if (info.infoType==Info::InvalidInfo) return;
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountUsername",info.accountInfo.username);
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountFlow",">=" + DataFormatter::trafficForm(info.accountInfo.roughTraffic));
+    onlineTime=info.accountInfo.loginTime;
+    timer->start(1000);
 }
 
-void Account::timeIncrement()
+void AccountInfoInterface::useregPageQueryState(Info info)
 {
-    if (lastQueryTime > 0) {
-        --lastQueryTime;
-    }
-    else {
-        lastQueryTime = queryInterval;
-        Network::instance()->check();
-        Network::instance()->query();
-    }
-    if (onlineTime >= 0) {
+    InterfaceEngine::instance()->showHint(info.hint);
+    if (info.infoType==Info::InvalidInfo) return;
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountUsername",info.accountInfo.username);
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountFlow",">=" + DataFormatter::trafficForm(info.accountInfo.roughTraffic+info.accountInfo.totalAccurateTraffic));
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountMoney",QString::number(info.accountInfo.balance, 'f', 2) + "RMB");
+}
+
+void AccountInfoInterface::useregPageDropIp(Info info)
+{
+    InterfaceEngine::instance()->showHint(info.hint);
+    if (info.infoType==Info::InvalidInfo) return;
+    initializeInterface();
+}
+
+void AccountInfoInterface::showOnlineTime()
+{
+    if (onlineTime>=0) {
         onlineTime++;
         QString timeText = DataFormatter::timeForm(onlineTime / 60 / 60) + ":" +
                            DataFormatter::timeForm(onlineTime / 60 % 60) + ":" +
                            DataFormatter::timeForm(onlineTime % 60);
-        Ui::instance()->rootContext()->setContextProperty("accountTime",timeText);
+        InterfaceEngine::instance()->rootContext()->setContextProperty("accountTime",timeText);
     }
     else {
-        Ui::instance()->rootContext()->setContextProperty("accountTime","Loading...");
+        InterfaceEngine::instance()->rootContext()->setContextProperty("accountTime","Loading...");
     }
 }
-
-void Account::onLogoutSucceed()
-{
-    timer->stop();
-    lastQueryTime = 0;
-    Ui::instance()->clear();
-}
-
-void Account::onDropIpSucceed()
-{
-    lastQueryTime = 0;
-}
-
-*/

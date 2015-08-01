@@ -5,6 +5,8 @@ NetworkAssistant::NetworkAssistant()
     loadUsernameAndPassword();
     timer=new QTimer();
     timer->start(15000);
+    accountInfoInterface = new AccountInfoInterface();
+    onlineStateInterface = new OnlineStateInterface();
 }
 
 NetworkAssistant::~NetworkAssistant()
@@ -25,6 +27,8 @@ void NetworkAssistant::loadUsernameAndPassword()
     for (int i = 0; i < encryptedPassword.length(); i++) {
         password+=(char)(encryptedPassword.at(i).toLatin1() ^ (rand() & 127));
     }
+    InterfaceEngine::instance()->rootContext()->setContextProperty("username",username);
+    InterfaceEngine::instance()->rootContext()->setContextProperty("password",password);
 }
 
 void NetworkAssistant::saveUsernameAndPassword()

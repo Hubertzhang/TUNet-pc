@@ -15,7 +15,7 @@ SOURCES += \
     src/backend/BasicNetworkService.cpp \
     src/backend/UseregPageService.cpp \
     src/backend/NetPageService.cpp \
-    src/ui/InterfaceFrame.cpp \
+    src/ui/InterfaceEngine.cpp \
     src/ui/AccountInfoInterface.cpp \
     src/ui/OnlineStateInterface.cpp \
     src/NetworkAssistant.cpp \
@@ -27,7 +27,7 @@ HEADERS  += \
     src/backend/BasicNetworkService.h \
     src/backend/UseregPageService.h \
     src/backend/NetPageService.h \
-    src/ui/InterfaceFrame.h \
+    src/ui/InterfaceEngine.h \
     src/ui/AccountInfoInterface.h \
     src/ui/OnlineStateInterface.h \
     src/NetworkAssistant.h \
