@@ -98,7 +98,7 @@ ApplicationWindow {
                 snackbar.open(message);
             }
             Connections {
-                target: interfaceFrame
+                target: engine
                 onShowHint: {
                     flickable.showSnackbar(content)
                 }

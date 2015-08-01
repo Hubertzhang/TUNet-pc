@@ -9,20 +9,18 @@ Dialog {
     height: 230
 
     TextField {
-        id: username
         width: parent.width
         height: 50
         placeholderText: "用户名/学号"
-        text: userUsername
+        text: username
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
     TextField {
-        id: password
         width: parent.width
         height: 42
         placeholderText: "密码"
-        text: userPassword
+        text: password
         echoMode: TextInput.Password
         anchors.horizontalCenter: parent.horizontalCenter
     }
