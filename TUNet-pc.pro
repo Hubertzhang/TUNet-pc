@@ -8,6 +8,7 @@ QT       += webkitwidgets
 QT       += widgets
 QT       += qml
 
+CONFIG += C++11
 TARGET = TUNet-pc
 TEMPLATE = app
 
