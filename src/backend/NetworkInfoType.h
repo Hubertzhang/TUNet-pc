@@ -1,4 +1,4 @@
-#ifndef NETWORKINFOTYPE_H
+﻿#ifndef NETWORKINFOTYPE_H
 #define NETWORKINFOTYPE_H
 
 #include <QString>
