@@ -9,10 +9,4 @@ Welcome to visit our [community home page](http://www.lab.mu).
 
 Requires Qt 5.4 or higher.
 
-Requires [QML Extras](https://github.com/papyros/qml-extras).
-
 Requires [QML Material](https://github.com/papyros/qml-material).
-
-### Licensing
-
-This is a free software.
