@@ -6,21 +6,23 @@ import Material.Extras 0.1
 Dialog {
     id: about
     title: "About us"
+    property int itemHeight: Units.dp(43)
+    property int itemMargin: Units.dp(2)
     ListItem.Subtitled {
-        height: 40
-        margins: Units.dp(2)
+        height: about.itemHeight
+        margins: about.itemMargin
         text: "制作"
         subText: "叶曦 方块 蔡立崴 黄维啸"
     }
     ListItem.Subtitled {
-        height: 40
-        margins: Units.dp(2)
+        height: about.itemHeight
+        margins: about.itemMargin
         text: "设计"
         subText: "方块 黄维啸"
     }
     ListItem.Subtitled {
-        height: 40
-        margins: Units.dp(2)
+        height: about.itemHeight
+        margins: about.itemMargin
         text: "测试"
         subText: "何钦尧 岳大禹 张阳坤"
     }

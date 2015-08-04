@@ -6,11 +6,11 @@ import Material.Extras 0.1
 Dialog {
     id: user
     title: "Account setting"
-    height: 230
+    height: Units.dp(247)
 
     TextField {
         width: parent.width
-        height: 50
+        height: Units.dp(54)
         placeholderText: "用户名/学号"
         text: username
         anchors.horizontalCenter: parent.horizontalCenter
@@ -18,7 +18,7 @@ Dialog {
 
     TextField {
         width: parent.width
-        height: 42
+        height: Units.dp(45)
         placeholderText: "密码"
         text: password
         echoMode: TextInput.Password
