@@ -1,4 +1,4 @@
-#include "UseregPageService.h"
+﻿#include "UseregPageService.h"
 
 UseregPageService* UseregPageService::_instance = NULL;
 
