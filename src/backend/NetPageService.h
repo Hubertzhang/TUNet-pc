@@ -12,7 +12,7 @@ class NetPageService : public QObject
 public:
     static NetPageService* instance();
     static NetPageService *_instance;
-    void loginRequest(QString,QString);
+    void loginRequest(QString, QString);
     void logoutRequest();
     void queryStateRequest();
 

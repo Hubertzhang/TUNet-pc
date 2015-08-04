@@ -1,18 +1,16 @@
 ﻿#include "UseregPageService.h"
 
-UseregPageService* UseregPageService::_instance = NULL;
+UseregPageService* UseregPageService::_instance = nullptr;
 
-UseregPageService* UseregPageService::instance()
-{
-    if (_instance == NULL) {
+UseregPageService* UseregPageService::instance() {
+    if (_instance == nullptr) {
         _instance = new UseregPageService();
         _instance->manager = new QNetworkAccessManager;
     }
     return _instance;
 }
 
-void UseregPageService::queryStateRequest(QString username, QString password)
-{
+void UseregPageService::queryStateRequest(QString username, QString password) {
     //Generate MD5 hash of the password
     QCryptographicHash hash(QCryptographicHash::Md5);
     hash.addData(password.toLatin1());
@@ -34,58 +32,56 @@ void UseregPageService::queryStateRequest(QString username, QString password)
     queryType = FirstQuery;
 }
 
-void UseregPageService::queryStateRequestFinished()
-{
+void UseregPageService::queryStateRequestFinished() {
     QNetworkReply *reply = queryStateReply;
-    queryStateReply = NULL;
+    queryStateReply = nullptr;
     QString replyString;
     QTextCodec *codec = QTextCodec::codecForName("GB2312");
     replyString = codec->toUnicode((reply->readAll()));
     //读取reply
     switch (queryType) {
-    case UseregPageService::FirstQuery: {
-        if (replyString == "ok") {
-            queryType = UseregPageService::SecondQuery;
-            QNetworkRequest secondRequest;
-            secondRequest.setUrl(QUrl("http://usereg.tsinghua.edu.cn/user_info.php"));
-            queryStateReply = manager->get(secondRequest);
-            connect(queryStateReply, SIGNAL(finished()), this, SLOT(queryStateRequestFinished()));
+        case UseregPageService::FirstQuery: {
+            if (replyString == "ok") {
+                queryType = UseregPageService::SecondQuery;
+                QNetworkRequest secondRequest;
+                secondRequest.setUrl(QUrl("http://usereg.tsinghua.edu.cn/user_info.php"));
+                queryStateReply = manager->get(secondRequest);
+                connect(queryStateReply, SIGNAL(finished()), this, SLOT(queryStateRequestFinished()));
+            }
+            break;
         }
-        break;
-    }
 
-    case UseregPageService::SecondQuery: {
-        getUserInfo(replyString);
-        queryType = UseregPageService::ThirdQuery;
-        QNetworkRequest thirdRequest;
-        thirdRequest.setUrl(QUrl("http://usereg.tsinghua.edu.cn/online_user_ipv4.php"));
-        queryStateReply = manager->get(thirdRequest);
-        connect(queryStateReply, SIGNAL(finished()), this, SLOT(queryStateRequestFinished()));
-        break;
-    }
+        case UseregPageService::SecondQuery: {
+            getUserInfo(replyString);
+            queryType = UseregPageService::ThirdQuery;
+            QNetworkRequest thirdRequest;
+            thirdRequest.setUrl(QUrl("http://usereg.tsinghua.edu.cn/online_user_ipv4.php"));
+            queryStateReply = manager->get(thirdRequest);
+            connect(queryStateReply, SIGNAL(finished()), this, SLOT(queryStateRequestFinished()));
+            break;
+        }
 
-    case UseregPageService::ThirdQuery: {
-        getIpInfo(replyString);
-        queryStateInfo.infoType = Info::QueryNetInfo;
-        emit queryStateResult(queryStateInfo);
-        queryType = UseregPageService::FirstQuery;
-        break;
-    }
+        case UseregPageService::ThirdQuery: {
+            getIpInfo(replyString);
+            queryStateInfo.infoType = Info::QueryNetInfo;
+            emit queryStateResult(queryStateInfo);
+            queryType = UseregPageService::FirstQuery;
+            break;
+        }
 
-    default: {
-        queryStateInfo.infoType = Info::InvalidInfo;
-        emit queryStateResult(queryStateInfo);
-        queryType = UseregPageService::FirstQuery;
-        break;
-    }
+        default: {
+            queryStateInfo.infoType = Info::InvalidInfo;
+            emit queryStateResult(queryStateInfo);
+            queryType = UseregPageService::FirstQuery;
+            break;
+        }
     }
     reply->deleteLater();
 }
 
 //解析http://usereg.tsinghua.edu.cn/user_info.php
 //并修改信息
-void UseregPageService::getUserInfo(const QString &replyString)
-{
+void UseregPageService::getUserInfo(const QString &replyString) {
     QWebPage page;
     QWebFrame *frame = page.mainFrame();
     frame->setHtml(replyString);
@@ -97,6 +93,7 @@ void UseregPageService::getUserInfo(const QString &replyString)
     //获取余额
     temp = all[42].toPlainText();
     queryStateInfo.accountInfo.balance = temp.left(temp.length() - 3).toDouble();
+
     //获取登陆时流量
     temp = all[36].toPlainText();
     for (int i = 0; i < temp.length(); i++) {
@@ -105,14 +102,14 @@ void UseregPageService::getUserInfo(const QString &replyString)
             break;
         }
     }
+
     queryStateInfo.accountInfo.roughTraffic = 0;
     //queryStateInfo.accountInfo.roughTraffic = temp.toDouble();
     //sometimes fails on first query.
     frame->deleteLater();
 }
 
-void UseregPageService::getIpInfo(const QString &replyString)
-{
+void UseregPageService::getIpInfo(const QString &replyString) {
     //移除注释
     QString replyStringPlus = replyString;
     replyStringPlus.remove("<!--", Qt::CaseSensitive);
@@ -149,9 +146,11 @@ void UseregPageService::getIpInfo(const QString &replyString)
         if (temp[temp.length() - 1] == 'K') {
             queryStateInfo.accountInfo.ipInfo[i].accurateTraffic *= 1000;
         }
+
         if (temp[temp.length() - 1] == 'M') {
             queryStateInfo.accountInfo.ipInfo[i].accurateTraffic *= (1000 * 1000);
         }
+
         if (temp[temp.length() - 1] == 'G') {
             queryStateInfo.accountInfo.ipInfo[i].accurateTraffic *= (1000 * 1000 * 1000);
         }
@@ -163,18 +162,20 @@ void UseregPageService::getIpInfo(const QString &replyString)
         queryStateInfo.accountInfo.ipInfo[i].onlineTime[0] = temp.mid(temp.length() - 8, 2).toInt();
         queryStateInfo.accountInfo.ipInfo[i].onlineTime[1] = temp.mid(temp.length() - 5, 2).toInt();
         queryStateInfo.accountInfo.ipInfo[i].onlineTime[2] = temp.mid(temp.length() - 2, 2).toInt();
+
         //mac
         temp = all[41 + 20 * i].toPlainText();
         queryStateInfo.accountInfo.ipInfo[i].macAdress = temp;
+
         //coockie
         temp = all[42 + 20 * i].firstChild().attribute("onclick");
         queryStateInfo.accountInfo.ipInfo[i].IpLogoutCookie = temp.mid(temp.length() - 35, 32);
     }
+
     frame->deleteLater();
 }
 
-void UseregPageService::dropIpRequest(int IpId)
-{
+void UseregPageService::dropIpRequest(int IpId) {
     QNetworkRequest dropIpRequest;
     QByteArray postData;
     QString temp;
@@ -192,20 +193,16 @@ void UseregPageService::dropIpRequest(int IpId)
     connect(dropIpReply, SIGNAL(finished()), this, SLOT(dropIpFinished()));
 }
 
-void UseregPageService::dropIpRequestFinished()
-{
+void UseregPageService::dropIpRequestFinished() {
     QNetworkReply *reply = dropIpReply;
     QString replyString;
     QTextCodec *codec = QTextCodec::codecForName("GB2312");
     replyString = codec->toUnicode((reply->readAll()));
     //读取reply
-    if (replyString == "ok")
-    {
+    if (replyString == "ok") {
         dropIpInfo.hint = "Drop ip successfully";
         dropIpInfo.infoType = Info::DropIpInfo;
-    }
-    else
-    {
+    } else {
         dropIpInfo.hint = "Fail to drop ip";
         dropIpInfo.infoType = Info::InvalidInfo;
     }
