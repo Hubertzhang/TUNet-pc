@@ -1,4 +1,5 @@
-﻿#include <QMessageBox>
+﻿#include "NetworkAssistant.h"
+#include <QMessageBox>
 #include <QApplication>
 
 int main(int argc, char **argv)
@@ -8,10 +9,7 @@ int main(int argc, char **argv)
     QCoreApplication::setApplicationName("tunet");
     QApplication a(argc, argv);
     try {
-/*
-        Ui::instance()->clear();
-        emit Ui::instance()->message("Welcome back!");
-*/
+        NetworkAssistant networkAssistant;
         return a.exec();
     }
     catch(std::exception e){
