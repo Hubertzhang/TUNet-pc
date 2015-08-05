@@ -21,7 +21,7 @@ void NetPageService::loginRequest(QString username, QString password)
     QNetworkRequest request(QUrl("http://net.tsinghua.edu.cn/cgi-bin/do_login"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     loginReply = manager->post(request, data.toLatin1());
-    connect(loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
+    connect(loginReply, SIGNAL(finished()), this, SLOT(loginRequestFinished()));
 }
 
 void NetPageService::loginRequestFinished()
