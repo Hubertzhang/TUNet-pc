@@ -159,3 +159,5 @@ $RECYCLE.BIN/
 # Mac desktop service store files
 .DS_Store
 .idea/
+TUNet-pc.xcodeproj
+Info.plist
