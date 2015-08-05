@@ -1,5 +1,13 @@
 ﻿#include "UseregPageService.h"
 
+#include "qthpple.h"
+QString decodeHpple(QtXMLElement *element) {
+    QString result;
+    foreach(QtXMLElement *child, element->getChildren()) {
+        result += child->getRaw();
+    }
+    return result.simplified();
+}
 UseregPageService* UseregPageService::_instance = nullptr;
 
 UseregPageService* UseregPageService::instance() {
@@ -82,20 +90,19 @@ void UseregPageService::queryStateRequestFinished() {
 //解析http://usereg.tsinghua.edu.cn/user_info.php
 //并修改信息
 void UseregPageService::getUserInfo(const QString &replyString) {
-    QWebPage page;
-    QWebFrame *frame = page.mainFrame();
-    frame->setHtml(replyString);
+
+    QByteArray a = replyString.toUtf8();
+    QtHpple hpple(&a, false);
+    QVector<QtXMLElement *> results = hpple.search("//body//td");
+
     QString temp;
-    QWebElement doc = frame->documentElement();
-    QWebElement body = doc.findFirst("body");
-    QWebElementCollection all = body.findAll("td");
 
     //获取余额
-    temp = all[42].toPlainText();
+    temp = decodeHpple(results[42]);
     queryStateInfo.accountInfo.balance = temp.left(temp.length() - 3).toDouble();
 
     //获取登陆时流量
-    temp = all[36].toPlainText();
+    temp = decodeHpple(results[36]);
     for (int i = 0; i < temp.length(); i++) {
         if (temp[i] == '(') {
             temp = temp.left(i);
@@ -106,7 +113,9 @@ void UseregPageService::getUserInfo(const QString &replyString) {
     queryStateInfo.accountInfo.roughTraffic = 0;
     //queryStateInfo.accountInfo.roughTraffic = temp.toDouble();
     //sometimes fails on first query.
-    frame->deleteLater();
+    foreach(QtXMLElement *element, results) {
+        delete element;
+    }
 }
 
 void UseregPageService::getIpInfo(const QString &replyString) {
@@ -114,20 +123,19 @@ void UseregPageService::getIpInfo(const QString &replyString) {
     QString replyStringPlus = replyString;
     replyStringPlus.remove("<!--", Qt::CaseSensitive);
     replyStringPlus.remove("-->", Qt::CaseSensitive);
-    QWebPage pageSpc;
-    QWebFrame *frame = pageSpc.mainFrame();
-    frame->setHtml(replyStringPlus);
 
-    QWebElement doc = frame->documentElement();
-    QWebElement body = doc.findFirst("body");
-    QWebElementCollection all = body.findAll("td");
+    QByteArray a = replyStringPlus.toUtf8();
+    QtHpple hpple(&a, false);
+
+    QVector<QtXMLElement *> results = hpple.search("//body//td");
+
     QString temp;
 
-    queryStateInfo.accountInfo.onlineIpCount = (all.count() - 23) / 20;
+    queryStateInfo.accountInfo.onlineIpCount = (results.count() - 23) / 20;
     queryStateInfo.accountInfo.totalAccurateTraffic = queryStateInfo.accountInfo.roughTraffic;
     for (int i = 0; i < queryStateInfo.accountInfo.onlineIpCount; i++) {
         //ip地址
-        temp = all[27 + 20 * i].toPlainText();
+        temp = decodeHpple(results[27 + 20 * i]);
         int dotAdress[3];
         for (int k = 0, j = 0; k < temp.length(); k++) {
             if (temp[k] == '.') {
@@ -141,7 +149,7 @@ void UseregPageService::getIpInfo(const QString &replyString) {
         queryStateInfo.accountInfo.ipInfo[i].ipv4_Ip[3] = temp.mid(dotAdress[2] + 1).toInt();
 
         //入流量
-        temp = all[28 + 20 * i].toPlainText();
+        temp = decodeHpple(results[28 + 20 * i]);
         queryStateInfo.accountInfo.ipInfo[i].accurateTraffic = temp.left(temp.length() - 1).toDouble();
         if (temp[temp.length() - 1] == 'K') {
             queryStateInfo.accountInfo.ipInfo[i].accurateTraffic *= 1000;
@@ -157,22 +165,24 @@ void UseregPageService::getIpInfo(const QString &replyString) {
         queryStateInfo.accountInfo.totalAccurateTraffic += queryStateInfo.accountInfo.ipInfo[i].accurateTraffic;
 
         //时间
-        temp = all[38 + 20 * i].toPlainText();
+        temp = decodeHpple(results[38 + 20 * i]);
         queryStateInfo.accountInfo.ipInfo[i].onlineTimeString = temp.mid(5, 11);
         queryStateInfo.accountInfo.ipInfo[i].onlineTime[0] = temp.mid(temp.length() - 8, 2).toInt();
         queryStateInfo.accountInfo.ipInfo[i].onlineTime[1] = temp.mid(temp.length() - 5, 2).toInt();
         queryStateInfo.accountInfo.ipInfo[i].onlineTime[2] = temp.mid(temp.length() - 2, 2).toInt();
 
         //mac
-        temp = all[41 + 20 * i].toPlainText();
+        temp = decodeHpple(results[41 + 20 * i]);
         queryStateInfo.accountInfo.ipInfo[i].macAdress = temp;
 
         //coockie
-        temp = all[42 + 20 * i].firstChild().attribute("onclick");
-        queryStateInfo.accountInfo.ipInfo[i].IpLogoutCookie = temp.mid(temp.length() - 35, 32);
+        temp = decodeHpple(results[42 + 20 * i]);
+        queryStateInfo.accountInfo.ipInfo[i].IpLogoutCookie = temp.mid(temp.length() - 39, 32);
     }
 
-    frame->deleteLater();
+    foreach(QtXMLElement *element, results) {
+        delete element;
+    }
 }
 
 void UseregPageService::dropIpRequest(int IpId) {

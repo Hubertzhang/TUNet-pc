@@ -2,10 +2,7 @@
 #define USEREGPAGE_H
 
 #include "NetworkInfoType.h"
-#include <QtWebKit>
 #include <QtNetwork>
-#include <QWebFrame>
-#include <QWebPage>
 
 class UseregPageService : public QObject
 {
