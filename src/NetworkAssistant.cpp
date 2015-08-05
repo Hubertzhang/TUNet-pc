@@ -4,8 +4,12 @@ NetworkAssistant::NetworkAssistant() {
     loadUsernameAndPassword();
     timer = new QTimer();
     timer->start(15000);
+    connect(timer,SIGNAL(timeout()),this,SLOT(onTimeOut()));
     accountInfoInterface = new AccountInfoInterface();
     onlineStateInterface = new OnlineStateInterface();
+
+    NetPageService::instance()->loginRequest(username,password);
+    InterfaceEngine::instance()->rootContext()->setContextProperty("networkAssistant",this);
 }
 
 NetworkAssistant::~NetworkAssistant() {
@@ -55,4 +59,12 @@ void NetworkAssistant::onTimeOut() {
     } else {
         UseregPageService::instance()->queryStateRequest(username, password);
     }
+}
+
+void NetworkAssistant::loginClicked(QString newUsername, QString newPassword)
+{
+    username = newUsername;
+    password = newPassword;
+    saveUsernameAndPassword();
+    NetPageService::instance()->loginRequest(username,password);
 }

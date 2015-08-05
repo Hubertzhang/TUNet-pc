@@ -9,6 +9,7 @@ Dialog {
     height: 230
 
     TextField {
+        id: userUsername
         width: parent.width
         height: 50
         placeholderText: "用户名/学号"
@@ -17,6 +18,7 @@ Dialog {
     }
 
     TextField {
+        id: userPassword
         width: parent.width
         height: 42
         placeholderText: "密码"
@@ -25,7 +27,5 @@ Dialog {
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
-/*
-    onAccepted: user.loginSignal(username.text,password.text)
-*/
+    onAccepted: networkAssistant.loginClicked(userUsername.text,userPassword.text)
 }
