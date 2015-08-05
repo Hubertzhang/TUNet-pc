@@ -1,4 +1,4 @@
-﻿#include "NetworkAssistant.h"
+#include "NetworkAssistant.h"
 
 NetworkAssistant::NetworkAssistant() {
     loadUsernameAndPassword();
@@ -61,10 +61,9 @@ void NetworkAssistant::onTimeOut() {
     }
 }
 
-void NetworkAssistant::loginClicked(QString newUsername, QString newPassword)
-{
+void NetworkAssistant::loginClicked(QString newUsername, QString newPassword) {
     username = newUsername;
     password = newPassword;
     saveUsernameAndPassword();
-    NetPageService::instance()->loginRequest(username,password);
+    NetPageService::instance()->loginRequest(username, password);
 }
