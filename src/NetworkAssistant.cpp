@@ -3,12 +3,14 @@
 NetworkAssistant::NetworkAssistant() {
     loadUsernameAndPassword();
     timer = new QTimer();
-    timer->start(15000);
+    timer->start(30000);
     connect(timer,SIGNAL(timeout()),this,SLOT(onTimeOut()));
     accountInfoInterface = new AccountInfoInterface();
     onlineStateInterface = new OnlineStateInterface();
 
     NetPageService::instance()->loginRequest(username,password);
+    NetPageService::instance()->queryStateRequest();
+    UseregPageService::instance()->queryStateRequest(username, password);
     InterfaceEngine::instance()->rootContext()->setContextProperty("networkAssistant",this);
 }
 
