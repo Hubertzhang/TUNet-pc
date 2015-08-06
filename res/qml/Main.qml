@@ -100,7 +100,8 @@ ApplicationWindow {
             Connections {
                 target: engine
                 onShowHint: {
-                    flickable.showSnackbar(content)
+                    if (content != "")
+                        flickable.showSnackbar(content)
                 }
             }
         }
