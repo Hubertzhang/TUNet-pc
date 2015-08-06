@@ -13,15 +13,17 @@ Item {
             margins: Units.dp(8)
         }
         Column {
+            id: infoColumn
             anchors.fill: parent
-
+            property int iconSize: Units.dp(28)
+            
             ListItem.Subtitled {
                 text: "账号名称"
                 subText: accountInfoUsername
                 action: Icon {
                     anchors.centerIn: parent
                     name: "awesome/desktop"
-                    size: Units.dp(28)
+                    size: infoColumn.iconSize
                 }
             }
 
@@ -32,7 +34,7 @@ Item {
                 action: Icon {
                     anchors.centerIn: parent
                     name: "awesome/cloud_download"
-                    size: Units.dp(28)
+                    size: infoColumn.iconSize
                 }
             }
 
@@ -42,7 +44,7 @@ Item {
                 action: Icon {
                     anchors.centerIn: parent
                     name: "awesome/clock_o"
-                    size: Units.dp(28)
+                    size: infoColumn.iconSize
                 }
             }
 
@@ -52,7 +54,7 @@ Item {
                 secondaryItem: Button {
                     text: "充值"
                     elevation: 1
-                    width: 32
+                    width: Units.dp(35)
                     onClicked: Qt.openUrlExternally("http://usereg.tsinghua.edu.cn/login.php")
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.verticalCenter: parent.verticalCenter
@@ -60,7 +62,7 @@ Item {
                 action: Icon {
                     anchors.centerIn: parent
                     name: "awesome/money"
-                    size: Units.dp(28)
+                    size: infoColumn.iconSize
                 }
             }
         }

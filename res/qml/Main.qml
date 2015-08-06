@@ -5,8 +5,8 @@ import Material.ListItems 0.1 as ListItem
 ApplicationWindow {
     id: demo
     visible: true
-    width: 400
-    height: 500
+    width: Units.dp(430)
+    height: Units.dp(538)
 
     theme {
         primaryColor: Palette.colors["blue"]["500"]
@@ -56,7 +56,7 @@ ApplicationWindow {
 
         Sidebar {
             id: sidebar
-            width: 100
+            width: Units.dp(108)
             Column {
                 width: parent.width
                 Repeater {
@@ -85,7 +85,7 @@ ApplicationWindow {
                 bottom: parent.bottom
             }
             clip: true
-            contentHeight: Math.max(example.implicitHeight + 40, height)
+            contentHeight: Math.max(example.implicitHeight + Units.dp(40), height)
             Loader {
                 id: example
                 anchors.fill: parent
