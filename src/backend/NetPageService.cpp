@@ -19,7 +19,8 @@ void NetPageService::loginRequest(QString username, QString password) {
     QNetworkRequest request(QUrl("http://net.tsinghua.edu.cn/cgi-bin/do_login"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     loginReply = manager->post(request, data.toLatin1());
-    connect(loginReply, SIGNAL(finished()), this, SLOT(loginFinished()));
+    loginInfo.accountInfo.username = username;
+    connect(loginReply, SIGNAL(finished()), this, SLOT(loginRequestFinished()));
 }
 
 void NetPageService::loginRequestFinished() {
@@ -86,12 +87,12 @@ void NetPageService::queryStateRequestFinished() {
         if (dataReceived == "") {
             queryStateInfo.hint = "not_logged_in";
             queryStateInfo.infoType = Info::InvalidInfo;
-            queryStateInfo.infoType = Info::QueryNetInfo;
         }
         else {
             QList<QString> temp = dataReceived.split(',');
-            queryStateInfo.accountInfo.balance = temp[2].toDouble();
+            queryStateInfo.accountInfo.roughTraffic = temp[2].toDouble();
             queryStateInfo.accountInfo.loginTime = temp[4].toLong();
+            queryStateInfo.infoType = Info::QueryNetInfo;
         }
     }
     else {

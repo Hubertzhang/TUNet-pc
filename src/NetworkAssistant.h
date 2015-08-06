@@ -33,6 +33,9 @@ private:
 
 private slots:
     void onTimeOut();
+
+public slots:
+    void loginClicked(QString, QString);
 };
 
 #endif // NETWORKASSISTANT_H

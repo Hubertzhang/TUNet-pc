@@ -38,8 +38,7 @@ void AccountInfoInterface::netPageLogin(Info info)
 {
     InterfaceEngine::instance()->showHint(info.hint);
     if (info.infoType==Info::InvalidInfo) return;
-    InterfaceEngine::instance()->rootContext()->setContextProperty("accountUsername",info.accountInfo.username);
-    InterfaceEngine::instance()->rootContext()->setContextProperty("accountFlow",">=" + DataFormatter::trafficForm(info.accountInfo.roughTraffic));
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountInfoUsername",info.accountInfo.username);
     timer->start(1000);
 }
 
@@ -54,8 +53,8 @@ void AccountInfoInterface::netPageQueryState(Info info)
 {
     InterfaceEngine::instance()->showHint(info.hint);
     if (info.infoType==Info::InvalidInfo) return;
-    InterfaceEngine::instance()->rootContext()->setContextProperty("accountUsername",info.accountInfo.username);
-    InterfaceEngine::instance()->rootContext()->setContextProperty("accountFlow",">=" + DataFormatter::trafficForm(info.accountInfo.roughTraffic));
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountInfoUsername",info.accountInfo.username);
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountInfoFlow",">=" + DataFormatter::trafficForm(info.accountInfo.roughTraffic));
     onlineTime=info.accountInfo.loginTime;
     timer->start(1000);
 }
@@ -64,9 +63,9 @@ void AccountInfoInterface::useregPageQueryState(Info info)
 {
     InterfaceEngine::instance()->showHint(info.hint);
     if (info.infoType==Info::InvalidInfo) return;
-    InterfaceEngine::instance()->rootContext()->setContextProperty("accountUsername",info.accountInfo.username);
-    InterfaceEngine::instance()->rootContext()->setContextProperty("accountFlow",">=" + DataFormatter::trafficForm(info.accountInfo.roughTraffic+info.accountInfo.totalAccurateTraffic));
-    InterfaceEngine::instance()->rootContext()->setContextProperty("accountMoney",QString::number(info.accountInfo.balance, 'f', 2) + "RMB");
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountInfoUsername", info.accountInfo.username);
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountInfoFlow", DataFormatter::trafficForm(info.accountInfo.roughTraffic + info.accountInfo.totalAccurateTraffic));
+    InterfaceEngine::instance()->rootContext()->setContextProperty("accountInfoMoney", QString::number(info.accountInfo.balance, 'f', 2) + "RMB");
 }
 
 void AccountInfoInterface::useregPageDropIp(Info info)
@@ -83,9 +82,9 @@ void AccountInfoInterface::showOnlineTime()
         QString timeText = DataFormatter::timeForm(onlineTime / 60 / 60) + ":" +
                            DataFormatter::timeForm(onlineTime / 60 % 60) + ":" +
                            DataFormatter::timeForm(onlineTime % 60);
-        InterfaceEngine::instance()->rootContext()->setContextProperty("accountTime",timeText);
+        InterfaceEngine::instance()->rootContext()->setContextProperty("accountInfoTime",timeText);
     }
     else {
-        InterfaceEngine::instance()->rootContext()->setContextProperty("accountTime","Loading...");
+        InterfaceEngine::instance()->rootContext()->setContextProperty("accountInfoTime","Loading...");
     }
 }
